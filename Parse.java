@@ -1,27 +1,57 @@
-// Write in Java a recursive descent parser for the grammar below. The grammar is LL(1). Your main file should be called Parse.java, and if P contains a program to be parsed, then:
+import java.util.*; //scanner https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Scanner.html#hasNext()
+public class Parse {
+    static List<String> tokens;
+    static int pos = 0;
 
-// java Parse < P
+    public static void main(String[] args) {
+        //scan inp and put into tokens
+        Scanner scanner = new Scanner(System.in);
+        tokens = new ArrayList<>();
+        while (scanner.hasNext()) {
+            tokens.add(scanner.next());
+        }
+        pos = 0;
 
-// should print either
+        //parse start symbol and react accordingly to kick off 
+        try {
+            parseS();
+            if (pos == tokens.size()) {
+                System.out.println("Program parsed successfully");
+            } 
+            else {
+                System.out.println("Parse error");
+            }
+        } catch (Exception e) {
+            System.out.println("Parse error");
+        }
+    }
 
-// Program parsed successfully
+    static String justLook() { //only look @ cur token (no consuming it)
+        if (pos < tokens.size()) {
+            return tokens.get(pos);
+        } 
+        return "";
+    }
+    
+    static void expect(String token) { //if match consume, else error 
+        if (justLook().equals(token)) {
+            pos++;
+        } else {
+            throw new RuntimeException("expected " + token + " but got " + justLook());
+        }
+    }
 
-// or
+    //diff rules for S L E --> diff fn
+    static void parseS() {
+        System.out.println("parsing start");
+        throw new RuntimeException("not implemented yet");
+    }
 
-// Parse error
+    static void parseL() {
+       throw new RuntimeException("not implemented yet");
+    }
 
-// depending on whether the input program parses correctly.
-
-// The grammar is:
-
-//    S ::= { L } | System.out.println ( E ) ; | if ( E ) S else S | while ( E ) S
-
-//    L ::= S L | ϵ
-
-//    E ::= true | false | ! E
-
-// where {S, L, E} is the set of nonterminal symbols, S is the start symbol,
-
-//     { } System.out.println ( ) ; if else while true false !
-
-// are the terminal symbols, and ϵ denotes the empty string.
+    static void parseE() {
+       throw new RuntimeException("not implemented yet");
+    }
+}
