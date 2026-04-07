@@ -41,17 +41,72 @@ public class Parse {
         }
     }
 
-    //diff rules for S L E --> diff fn
+    //look at first element to decide what to do:
     static void parseS() {
-        System.out.println("parsing start");
-        throw new RuntimeException("not implemented yet");
+        String cur = justLook();
+        if (cur.equals("{")) {
+            //resp for encountering list of statements
+            expect("{");
+            parseL();
+            expect("}");
+        }
+        else if (cur.equals("System.out.println")) {
+            expect("System.out.println");
+            expect("(");
+            parseE();
+            expect(")");
+            expect(";");
+        }
+        else if (cur.equals("if")) {
+            expect("if");
+            expect("(");
+            parseE();
+            expect(")");
+            parseS();
+            expect("else");
+            parseS();
+        }
+        else if (cur.equals("while")) {
+            expect("while");
+            expect("(");
+            parseE();
+            expect(")");
+            parseS();
+        }
+        else {
+            throw new RuntimeException("S parse error");
+        }
     }
 
     static void parseL() {
-       throw new RuntimeException("not implemented yet");
+       String cur = justLook();
+        // if (cur.equals("")) {
+
+        // }
+        // else if (cur.equals("")) {
+
+        // }
+        // else {
+        //     throw new RuntimeException("L parse error");
+        // }
+        System.out.println("L not done yet");
     }
 
     static void parseE() {
-       throw new RuntimeException("not implemented yet");
+        //true false or ! E --> can be ! ! ! ! ! true , etc.
+        String cur = justLook();
+        if (cur.equals("true")) {
+            expect("true");
+        }
+        else if (cur.equals("false")) {
+            expect("false");
+        }
+        else if (cur.equals("!")) {
+            expect("!");
+            parseE();
+        }
+        else {
+            throw new RuntimeException("E parse error");
+        }
     }
 }
