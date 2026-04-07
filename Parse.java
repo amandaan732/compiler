@@ -79,17 +79,17 @@ public class Parse {
     }
 
     static void parseL() {
-       String cur = justLook();
-        // if (cur.equals("")) {
+        String cur = justLook();
+        //either gonna be an S or assume its empty case --> starts with { , print, if, or while to be S L case
 
-        // }
-        // else if (cur.equals("")) {
-
-        // }
+        if (cur.equals("{") || cur.equals("System.out.println") || cur.equals("if") || cur.equals("while")) {
+            parseS();
+            parseL();
+        }
         // else {
         //     throw new RuntimeException("L parse error");
         // }
-        System.out.println("L not done yet");
+        // System.out.println("L not done yet");
     }
 
     static void parseE() {
