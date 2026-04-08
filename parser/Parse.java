@@ -23,9 +23,7 @@ public class Parse {
         inp = inp.replace(";", " ; ");
         inp = inp.replace("!", " ! ");
         for (String t : inp.split("\\s+")) {
-            if (!t.isEmpty()){
-                tokens.add(t);
-            } 
+            if (!t.isEmpty()) tokens.add(t);
         }
 
         //parse start symbol and react accordingly to kick off 
