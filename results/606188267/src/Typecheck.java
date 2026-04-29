@@ -25,27 +25,79 @@ public class Typecheck {
         return isSub(parent,t2);
     }
 
-    static void firstPass(Goal g) {
-        //register the main class, then add it to class' parent w null parent & empty maps for fields and methods
-        //loop through all other class declarations 
-            //checks if plain class or a class extends and call correct fn
-        //pass off details; the acutal fld/mtd collection is somewheer else
-        String mainName = g.f0.f1.f0.tokenImage;
-        mainCN = mainName;
 
-        clparent.put(mainName, null);
-        cflds.put(mainName, new LinkedHashMap<>());
-        cmtds.put(mainName, new LinkedHashMap<>());
+    static class fpVisitor extends GJDepthFirst<String, Void> {
 
-        //now regis all the other classes
-        for (Enumeration<Node> e = g.f1.elements(); e.hasMoreElements(); ) {
-            TypeDeclaration td = (TypeDeclaration) e.nextElement();
-            if (td.f0.choice instanceof ClassDeclaration) {
-                handlePlainCL((ClassDeclaration) td.f0.choice);
+        @Override
+        public String visit(Goal n, Void a) {
+            String mainName = n.f0.f1.f0.tokenImage;
+            mainCN = mainName;
+            clparent.put(mainName, null);
+            cflds.put(mainName, new LinkedHashMap<>());
+            cmtds.put(mainName, new LinkedHashMap<>());
+            n.f1.accept(this, a);
+            return null;
+        }
+
+        @Override
+        public String visit(ClassDeclaration n, Void a) {
+            String name = n.f1.f0.tokenImage;
+            if (clparent.containsKey(name)) {
+                throw new RuntimeException("type error");
             }
-            else {
-                handleExtnds((ClassExtendsDeclaration) td.f0.choice);
+            clparent.put(name, null);
+            Map<String, String> fields = new LinkedHashMap<>();
+            for (Enumeration<Node> e = n.f3.elements(); e.hasMoreElements();) {
+                VarDeclaration vd = (VarDeclaration) e.nextElement();
+                String fname = vd.f1.f0.tokenImage;
+                if (fields.containsKey(fname)) {
+                    throw new RuntimeException("type error");
+                }
+                fields.put(fname, Typecheck.toString(vd.f0));
             }
+            Map<String, MethodInfo> methods = new LinkedHashMap<>();
+            for (Enumeration<Node> e = n.f4.elements(); e.hasMoreElements();) {
+                MethodDeclaration md = (MethodDeclaration) e.nextElement();
+                String mname = md.f2.f0.tokenImage;
+                if (methods.containsKey(mname)) {
+                    throw new RuntimeException("type error");
+                }
+                methods.put(mname, buildMTD(md));
+            }
+            cflds.put(name, fields);
+            cmtds.put(name, methods);
+            return null;
+        }
+
+        @Override
+        public String visit(ClassExtendsDeclaration n, Void a) {
+            String name   = n.f1.f0.tokenImage;
+            String parent = n.f3.f0.tokenImage;
+            if (clparent.containsKey(name)) {
+                throw new RuntimeException("type error");
+            }
+            clparent.put(name, parent);
+            Map<String, String> fields = new LinkedHashMap<>();
+            for (Enumeration<Node> e = n.f5.elements(); e.hasMoreElements();) {
+                VarDeclaration vd = (VarDeclaration) e.nextElement();
+                String fname = vd.f1.f0.tokenImage;
+                if (fields.containsKey(fname)) {
+                    throw new RuntimeException("type error");
+                }
+                fields.put(fname, Typecheck.toString(vd.f0));
+            }
+            Map<String, MethodInfo> methods = new LinkedHashMap<>();
+            for (Enumeration<Node> e = n.f6.elements(); e.hasMoreElements();) {
+                MethodDeclaration md = (MethodDeclaration) e.nextElement();
+                String mname = md.f2.f0.tokenImage;
+                if (methods.containsKey(mname)) {
+                    throw new RuntimeException("type error");
+                }
+                methods.put(mname, buildMTD(md));
+            }
+            cflds.put(name, fields);
+            cmtds.put(name, methods);
+            return null;
         }
     }
 
@@ -81,9 +133,9 @@ public class Typecheck {
         cmtds.clear();
         try {
             Goal goal = new MiniJavaParser(System.in).Goal();
-            firstPass(goal);
+            goal.accept(new fpVisitor(), null);
             validHierarch();
-            tcGoal(goal);
+            goal.accept(new tcVisitor(), null);
             System.out.println("Program type checked successfully");
         } 
         catch (Exception e) {
@@ -93,64 +145,6 @@ public class Typecheck {
         }
     }
 
-    static void handlePlainCL(ClassDeclaration d) {
-        String name = d.f1.f0.tokenImage;
-        if (clparent.containsKey(name)) { //dup class name
-            throw new RuntimeException("type error"); 
-        }
-
-        clparent.put(name, null);
-        Map<String, String> fields = new LinkedHashMap<>();
-        for (Enumeration<Node> e = d.f3.elements(); e.hasMoreElements(); ) {
-            VarDeclaration vd = (VarDeclaration) e.nextElement();
-            String fname = vd.f1.f0.tokenImage;
-            if (fields.containsKey(fname)) { 
-                throw new RuntimeException("type error");
-            }
-            fields.put(fname, toString(vd.f0));
-        }
-        Map<String, MethodInfo> methods = new LinkedHashMap<>();
-        for (Enumeration<Node> e = d.f4.elements(); e.hasMoreElements(); ) {
-            MethodDeclaration md = (MethodDeclaration) e.nextElement();
-            String mname = md.f2.f0.tokenImage;
-            if (methods.containsKey(mname)) { 
-                throw new RuntimeException("type error");
-            } 
-            methods.put(mname, buildMTD(md));
-        }
-        cflds.put(name, fields);
-        cmtds.put(name, methods);
-    }
-
-    static void handleExtnds(ClassExtendsDeclaration d) {
-        String name   = d.f1.f0.tokenImage;
-        String parent = d.f3.f0.tokenImage;
-        if (clparent.containsKey(name)) {
-            throw new RuntimeException("type error");
-        }
-        clparent.put(name, parent);
-        Map<String, String> fields = new LinkedHashMap<>();
-        for (Enumeration<Node> e = d.f5.elements(); e.hasMoreElements(); ) {
-            VarDeclaration vd = (VarDeclaration) e.nextElement();
-            String fname = vd.f1.f0.tokenImage;
-            if (fields.containsKey(fname)) {
-                throw new RuntimeException("type error");   
-            }
-            fields.put(fname, toString(vd.f0));
-        }
-
-        Map<String, MethodInfo> methods = new LinkedHashMap<>();
-        for (Enumeration<Node> e = d.f6.elements(); e.hasMoreElements(); ) {
-            MethodDeclaration md = (MethodDeclaration) e.nextElement();
-            String mname = md.f2.f0.tokenImage;
-            if (methods.containsKey(mname)){
-                throw new RuntimeException("type error");
-            }
-            methods.put(mname, buildMTD(md));
-        }
-        cflds.put(name,fields);
-        cmtds.put(name,methods);
-    }
 
     static MethodInfo buildMTD(MethodDeclaration md) {
         MethodInfo info = new MethodInfo();
@@ -255,88 +249,6 @@ public class Typecheck {
     }
 
 
-    //typ chk all mtd/main bodies
-    static void tcGoal(Goal g) {
-        tcMain(g.f0);
-        for (Enumeration<Node> e = g.f1.elements(); e.hasMoreElements();) {
-            TypeDeclaration td = (TypeDeclaration) e.nextElement();
-            if (td.f0.choice instanceof ClassDeclaration) {
-                tcCL((ClassDeclaration) td.f0.choice);
-            }
-            else {
-                tcCLExt((ClassExtendsDeclaration) td.f0.choice);
-            }
-        }
-    }
-
-    static void tcMain(MainClass mc) {
-        Map<String, String> env = new LinkedHashMap<>();
-        Set<String> seen = new HashSet<>();
-        seen.add(mc.f6.tokenImage); //main's array param (e.g. "a") == in scope
-        for (Enumeration<Node> e = mc.f14.elements(); e.hasMoreElements();) {
-            VarDeclaration vd = (VarDeclaration) e.nextElement();
-            String name = vd.f1.f0.tokenImage;
-            if (!seen.add(name)) {
-                throw new RuntimeException("type error");
-            } 
-            String t = toString(vd.f0);
-            primOrCLName(t);
-            env.put(name,t);
-        }
-        for (Enumeration<Node> e = mc.f15.elements(); e.hasMoreElements();) {
-            checkStmt((Statement) e.nextElement(), env,null);
-        }
-    }
-
-    static void tcCL(ClassDeclaration d) {
-        String cls = d.f1.f0.tokenImage;
-        for (Enumeration<Node> e = d.f4.elements(); e.hasMoreElements();) {
-            tcMTD((MethodDeclaration) e.nextElement(), cls);
-        }
-    }
-
-    static void tcCLExt(ClassExtendsDeclaration d) {
-        String cls = d.f1.f0.tokenImage;
-        for (Enumeration<Node> e = d.f6.elements(); e.hasMoreElements();) {
-            tcMTD((MethodDeclaration) e.nextElement(), cls);
-        }
-    }
-
-    static void tcMTD(MethodDeclaration md, String cls) {
-        MethodInfo info = cmtds.get(cls).get(md.f2.f0.tokenImage);
-        Map<String, String> env = new LinkedHashMap<>(makeFLDMap(cls));
-        //all params and locals == pairwise distinct
-        Set<String> paramAndLocals = new HashSet<>();
-
-        if (md.f4.present()) {
-            FormalParameterList fpl = (FormalParameterList) md.f4.node;
-            addParam(fpl.f0, env, paramAndLocals);
-            for (Enumeration<Node> e = fpl.f1.elements(); e.hasMoreElements();) {
-                addParam(((FormalParameterRest) e.nextElement()).f1, env, paramAndLocals);
-            }
-        }
-
-        for (Enumeration<Node> e = md.f7.elements(); e.hasMoreElements();) {
-            VarDeclaration vd = (VarDeclaration) e.nextElement();
-            String name = vd.f1.f0.tokenImage;
-            if (!paramAndLocals.add(name)) { 
-                throw new RuntimeException("type error");
-            }
-            String t = toString(vd.f0);
-            primOrCLName(t);
-            env.put(name, t);
-        }
-
-        for (Enumeration<Node> e = md.f8.elements(); e.hasMoreElements();) {
-            checkStmt((Statement) e.nextElement(), env, cls);
-        }
-
-        String retType = checkExpr(md.f10, env, cls); 
-        if (!isSub(retType, info.returnType)) {
-            throw new RuntimeException("type error");
-        }
-    }
-
     //add a formal parameter == enforce uniqueness
     static void addParam(FormalParameter fp, Map<String, String> env, Set<String> seen) {
         String name = fp.f1.f0.tokenImage;
@@ -345,7 +257,7 @@ public class Typecheck {
         }
         String t = toString(fp.f0);
         primOrCLName(t);
-        env.put(name,t);
+        env.put(name, t);
     }
 
     //parent fields first, then new fields override
@@ -358,235 +270,330 @@ public class Typecheck {
         if (parent != null) {
             result.putAll(makeFLDMap(parent));
         }
-        result.putAll(cflds.get(cls)); //shadow parent fields
+        result.putAll(cflds.get(cls));
         return result;
     }
 
-    //stmts (r26-31)
-    static void checkStmt(Statement stmt, Map<String, String> env, String cls) {
-        Node s = stmt.f0.choice;
 
-        if (s instanceof Block) {
-            for (Enumeration<Node> e = ((Block) s).f1.elements(); e.hasMoreElements();) {
-                checkStmt((Statement) e.nextElement(), env, cls);
+    static class tcVisitor extends GJDepthFirst<String, Map<String, String>> {
+        String cls = null;
+
+        @Override
+        public String visit(Goal n, Map<String, String> env) {
+            n.f0.accept(this, env);
+            n.f1.accept(this, env);
+            return null;
+        }
+
+        @Override
+        public String visit(MainClass n, Map<String, String> env) {
+            Map<String, String> localEnv = new LinkedHashMap<>();
+            Set<String> seen = new HashSet<>();
+            seen.add(n.f6.tokenImage); //main's array param (e.g. "a") == in scope
+            for (Enumeration<Node> e = n.f14.elements(); e.hasMoreElements();) {
+                VarDeclaration vd = (VarDeclaration) e.nextElement();
+                String name = vd.f1.f0.tokenImage;
+                if (!seen.add(name)) {
+                    throw new RuntimeException("type error");
+                }
+                String t = Typecheck.toString(vd.f0);
+                primOrCLName(t);
+                localEnv.put(name, t);
             }
-        } 
-        else if (s instanceof AssignmentStatement) {
-            AssignmentStatement as = (AssignmentStatement) s;
-            String varName = as.f0.f0.tokenImage;
+            for (Enumeration<Node> e = n.f15.elements(); e.hasMoreElements();) {
+                ((Statement) e.nextElement()).accept(this, localEnv);
+            }
+            return null;
+        }
+
+        @Override
+        public String visit(ClassDeclaration n, Map<String, String> env) {
+            cls = n.f1.f0.tokenImage;
+            for (Enumeration<Node> e = n.f4.elements(); e.hasMoreElements();) {
+                ((MethodDeclaration) e.nextElement()).accept(this, null);
+            }
+            return null;
+        }
+
+        @Override
+        public String visit(ClassExtendsDeclaration n, Map<String, String> env) {
+            cls = n.f1.f0.tokenImage;
+            for (Enumeration<Node> e = n.f6.elements(); e.hasMoreElements();) {
+                ((MethodDeclaration) e.nextElement()).accept(this, null);
+            }
+            return null;
+        }
+
+        @Override
+        public String visit(MethodDeclaration n, Map<String, String> env) {
+            MethodInfo info = cmtds.get(cls).get(n.f2.f0.tokenImage);
+            Map<String, String> methodEnv = new LinkedHashMap<>(makeFLDMap(cls));
+            Set<String> paramAndLocals = new HashSet<>();
+            if (n.f4.present()) {
+                FormalParameterList fpl = (FormalParameterList) n.f4.node;
+                addParam(fpl.f0, methodEnv, paramAndLocals);
+                for (Enumeration<Node> e = fpl.f1.elements(); e.hasMoreElements();) {
+                    addParam(((FormalParameterRest) e.nextElement()).f1, methodEnv,paramAndLocals);
+                }
+            }
+            for (Enumeration<Node> e = n.f7.elements(); e.hasMoreElements();) {
+                VarDeclaration vd = (VarDeclaration) e.nextElement();
+                String name = vd.f1.f0.tokenImage;
+                if (!paramAndLocals.add(name)) {
+                    throw new RuntimeException("type error");
+                }
+                String t= Typecheck.toString(vd.f0);
+                primOrCLName(t);
+                methodEnv.put(name, t);
+            }
+            for (Enumeration<Node> e = n.f8.elements(); e.hasMoreElements();)
+                ((Statement) e.nextElement()).accept(this, methodEnv);
+            String retType = n.f10.accept(this, methodEnv);
+            if (!isSub(retType, info.returnType)) {
+                throw new RuntimeException("type error");
+            }
+            return null;
+        }
+
+        //stmt vis
+        @Override
+        public String visit(Statement n,Map<String, String> env) {
+            return n.f0.accept(this, env);
+        }
+
+        @Override
+        public String visit(Block n,Map<String, String> env) {
+            for (Enumeration<Node> e = n.f1.elements(); e.hasMoreElements();) {
+                ((Statement) e.nextElement()).accept(this, env);
+            }
+            return null;
+        }
+
+        @Override
+        public String visit(AssignmentStatement n, Map<String, String> env) {
+            String varName = n.f0.f0.tokenImage;
             if (!env.containsKey(varName)) {
                 throw new RuntimeException("type error");
             }
-            String rhs = checkExpr(as.f2, env, cls);
-            if (!isSub(rhs, env.get(varName))) { 
+            String rhs = n.f2.accept(this, env);
+            if (!isSub(rhs, env.get(varName))) {
                 throw new RuntimeException("type error");
             }
-        } 
-        else if (s instanceof ArrayAssignmentStatement) { 
-            ArrayAssignmentStatement aas = (ArrayAssignmentStatement) s;
-            String varName = aas.f0.f0.tokenImage;
-            if (!env.containsKey(varName) || !env.get(varName).equals("int[]")) {
-                throw new RuntimeException("type error");
-            }
-            if (!checkExpr(aas.f2, env, cls).equals("int")) { //ind must be int
-                throw new RuntimeException("type error");
-            }
-            if (!checkExpr(aas.f5, env, cls).equals("int")) { //val must be int
-                throw new RuntimeException("type error");
-            }
-        } 
-        else if (s instanceof IfStatement) { 
-            IfStatement is = (IfStatement) s;
-            if (!checkExpr(is.f2, env, cls).equals("boolean")) {
-                throw new RuntimeException("type error");
-            }
-            checkStmt(is.f4, env, cls);
-            checkStmt(is.f6, env, cls);
-        } 
-        else if (s instanceof WhileStatement) { 
-            WhileStatement ws = (WhileStatement) s;
-            if (!checkExpr(ws.f2, env, cls).equals("boolean")) {
-                throw new RuntimeException("type error");
-            }
-            checkStmt(ws.f4, env, cls);
-        } 
-        else if (s instanceof PrintStatement) { //r31; only int
-            if (!checkExpr(((PrintStatement) s).f2, env, cls).equals("int")) {
-                throw new RuntimeException("type error");
-            }
+            return null;
         }
-    }
 
-    //exprs (r32-39)
-    static String checkExpr(Expression expr, Map<String, String> env, String cls) {
-        Node e = expr.f0.choice;
-
-        if (e instanceof AndExpression) {
-            AndExpression ae = (AndExpression) e;
-            if (!checkPrim(ae.f0, env, cls).equals("boolean")) {
+        @Override
+        public String visit(ArrayAssignmentStatement n,Map<String, String> env) {
+            String varName = n.f0.f0.tokenImage;
+            if (!env.containsKey(varName) || !env.get(varName).equals("int[]"))
+                throw new RuntimeException("type error");
+            if (!n.f2.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
-            if (!checkPrim(ae.f2, env, cls).equals("boolean")) {
+            if (!n.f5.accept(this, env).equals("int")) {
+                throw new RuntimeException("type error");
+            }
+            return null;
+        }
+
+        @Override
+        public String visit(IfStatement n,Map<String, String> env) {
+            if (!n.f2.accept(this, env).equals("boolean")) {
+                throw new RuntimeException("type error");
+            }
+            n.f4.accept(this, env);
+            n.f6.accept(this, env);
+            return null;
+        }
+
+        @Override
+        public String visit(WhileStatement n, Map<String, String> env) {
+            if (!n.f2.accept(this, env).equals("boolean")) {
+                throw new RuntimeException("type error");
+            }
+            n.f4.accept(this, env);
+            return null;
+        }
+
+        @Override
+        public String visit(PrintStatement n, Map<String, String> env) {
+            if (!n.f2.accept(this, env).equals("int")) {
+                throw new RuntimeException("type error");
+            }
+            return null;
+        }
+
+        //expr vis
+        @Override
+        public String visit(Expression n,Map<String, String> env) {
+            return n.f0.accept(this, env);
+        }
+
+        @Override
+        public String visit(AndExpression n,Map<String, String> env) {
+            if (!n.f0.accept(this, env).equals("boolean")) {
+                throw new RuntimeException("type error");
+            }
+            if (!n.f2.accept(this, env).equals("boolean")) {
                 throw new RuntimeException("type error");
             }
             return "boolean";
-        } 
-        else if (e instanceof CompareExpression) { 
-            CompareExpression ce = (CompareExpression) e;
-            if (!checkPrim(ce.f0, env, cls).equals("int")) {
+        }
+
+        @Override
+        public String visit(CompareExpression n, Map<String, String> env) {
+            if (!n.f0.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
-            if (!checkPrim(ce.f2, env, cls).equals("int")) {
+            if (!n.f2.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
             return "boolean";
-        } 
-        else if (e instanceof PlusExpression) {
-            PlusExpression pe = (PlusExpression) e;
-            if (!checkPrim(pe.f0, env, cls).equals("int")) {
+        }
+
+        @Override
+        public String visit(PlusExpression n, Map<String, String> env) {
+            if (!n.f0.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
-            if (!checkPrim(pe.f2, env, cls).equals("int")) {
+            if (!n.f2.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
             return "int";
-        } 
-        else if (e instanceof MinusExpression) { 
-            MinusExpression me = (MinusExpression) e;
-            if (!checkPrim(me.f0, env, cls).equals("int")) {
+        }
+
+        @Override
+        public String visit(MinusExpression n, Map<String, String> env) {
+            if (!n.f0.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
-            if (!checkPrim(me.f2, env, cls).equals("int")) {
+            if (!n.f2.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
             return "int";
-        } 
-        else if (e instanceof TimesExpression) { 
-            TimesExpression te = (TimesExpression) e;
-            if (!checkPrim(te.f0, env, cls).equals("int")) {
+        }
+
+        @Override
+        public String visit(TimesExpression n, Map<String, String> env) {
+            if (!n.f0.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
-            if (!checkPrim(te.f2, env, cls).equals("int")) {
-                throw new RuntimeException("type error");
-            }
-            return "int";
-        } 
-        else if (e instanceof ArrayLookup) { 
-            ArrayLookup al = (ArrayLookup) e;
-            if (!checkPrim(al.f0, env, cls).equals("int[]")) {
-                throw new RuntimeException("type error");
-            }
-            if (!checkPrim(al.f2, env, cls).equals("int")) {
+            if (!n.f2.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
             return "int";
-        } 
-        else if (e instanceof ArrayLength) { 
-            if (!checkPrim(((ArrayLength) e).f0, env, cls).equals("int[]")) {
+        }
+
+        @Override
+        public String visit(ArrayLookup n, Map<String, String> env) {
+            if (!n.f0.accept(this, env).equals("int[]")) {
+                throw new RuntimeException("type error");
+            }
+            if (!n.f2.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
             return "int";
-        } 
-        else if (e instanceof MessageSend) { //r39
-            return checkMTDCall((MessageSend) e, env, cls);
-        } 
-        else { //prim expr
-            return checkPrim((PrimaryExpression) e, env, cls);
-        }
-    }
-
-    //r39 cont.; p.id(e1,...,en)
-    static String checkMTDCall(MessageSend ms, Map<String, String> env, String cls) {
-        String receiverType = checkPrim(ms.f0, env, cls);
-        if (!clparent.containsKey(receiverType)) { //must == class; CANR be  primitive
-            throw new RuntimeException("type error");
         }
 
-        String mname = ms.f2.f0.tokenImage;
-        MethodInfo method = findMTD(receiverType, mname);
-        if (method == null) { 
-            throw new RuntimeException("type error");
-        }
-
-        //collect actual arg types
-        List<String> argTypes = new ArrayList<>();
-        if (ms.f4.present()) {
-            ExpressionList el = (ExpressionList) ms.f4.node;
-            argTypes.add(checkExpr(el.f0, env, cls));
-            for (Enumeration<Node> en = el.f1.elements(); en.hasMoreElements();) {
-                argTypes.add(checkExpr(((ExpressionRest) en.nextElement()).f1, env, cls));
-            }
-        }
-
-        if (argTypes.size() != method.paramTypes.size()) { //arity match
-            throw new RuntimeException("type error"); 
-        }
-        for (int i = 0; i < argTypes.size(); i++) {
-            if (!isSub(argTypes.get(i), method.paramTypes.get(i))) {
+        @Override
+        public String visit(ArrayLength n, Map<String, String> env) {
+            if (!n.f0.accept(this, env).equals("int[]")) {
                 throw new RuntimeException("type error");
             }
+            return "int";
         }
 
-        return method.returnType;
-    }
-
-    static String checkPrim(PrimaryExpression p, Map<String, String> env, String cls) {
-        Node node = p.f0.choice;
-
-        if (node instanceof IntegerLiteral) { 
-            return "int";    
+        @Override
+        public String visit(MessageSend n, Map<String, String> env) {
+            String receiverType = n.f0.accept(this, env);
+            if (!clparent.containsKey(receiverType)) {
+                throw new RuntimeException("type error");
+            }
+            String mname = n.f2.f0.tokenImage;
+            MethodInfo mtd = findMTD(receiverType, mname);
+            if (mtd == null) {
+                throw new RuntimeException("type error");
+            }
+            List<String> argTypes = new ArrayList<>();
+            if (n.f4.present()) {
+                ExpressionList el = (ExpressionList) n.f4.node;
+                argTypes.add(el.f0.accept(this, env));
+                for (Enumeration<Node> e = el.f1.elements(); e.hasMoreElements();) {
+                    argTypes.add(((ExpressionRest) e.nextElement()).f1.accept(this, env));
+                }
+            }
+            if (argTypes.size() != mtd.paramTypes.size()) {
+                throw new RuntimeException("type error");
+            }
+            for (int i = 0; i < argTypes.size(); i++)
+                if (!isSub(argTypes.get(i), mtd.paramTypes.get(i))) {
+                    throw new RuntimeException("type error");
+                }
+            return mtd.returnType;
         }
-        if (node instanceof TrueLiteral || node instanceof FalseLiteral) { 
+
+        //prim expr vis
+        @Override
+        public String visit(PrimaryExpression n,Map<String, String> env) {
+            return n.f0.accept(this, env);
+        }
+        @Override 
+        public String visit(IntegerLiteral n,Map<String, String> env) { 
+            return "int"; 
+        }
+        @Override 
+        public String visit(TrueLiteral n,Map<String, String> env) { 
             return "boolean"; 
         }
-
-
-        if (node instanceof Identifier) {
-            String name =((Identifier) node).f0.tokenImage;
+        @Override 
+        public String visit(FalseLiteral n,Map<String, String> env) { 
+            return "boolean"; 
+        }
+        @Override
+        public String visit(Identifier n,Map<String, String> env) {
+            String name = n.f0.tokenImage;
             if (!env.containsKey(name)) {
                 throw new RuntimeException("type error");
             }
             return env.get(name);
         }
-
-        if (node instanceof ThisExpression) {   
-            if (cls==null) {
+        @Override
+        public String visit(ThisExpression n, Map<String, String> env) {
+            if (cls == null) {
                 throw new RuntimeException("type error");
             }
             return cls;
         }
 
-
-        if (node instanceof ArrayAllocationExpression) {  
-            if (!checkExpr(((ArrayAllocationExpression) node).f3, env, cls).equals("int")) {
+        @Override
+        public String visit(ArrayAllocationExpression n, Map<String, String> env) {
+            if (!n.f3.accept(this, env).equals("int")) {
                 throw new RuntimeException("type error");
             }
             return "int[]";
         }
 
-        if (node instanceof AllocationExpression) { 
-            String newCls = ((AllocationExpression) node).f1.f0.tokenImage;
+
+        @Override
+        public String visit(AllocationExpression n, Map<String, String> env) {
+            String newCls = n.f1.f0.tokenImage;
             if (!clparent.containsKey(newCls) || newCls.equals(mainCN)) {
                 throw new RuntimeException("type error");
             }
             return newCls;
         }
 
-
-        if (node instanceof NotExpression) { 
-            if (!checkExpr(((NotExpression) node).f1, env, cls).equals("boolean")) {
+        @Override
+        public String visit(NotExpression n, Map<String, String> env) {
+            if (!n.f1.accept(this, env).equals("boolean")) {
                 throw new RuntimeException("type error");
             }
             return "boolean";
         }
-
-        if (node instanceof BracketExpression) {     
-            return checkExpr(((BracketExpression) node).f1, env, cls);
+        @Override
+        public String visit(BracketExpression n, Map<String, String> env) {
+            return n.f1.accept(this, env);
         }
-
-
-        throw new RuntimeException("type error");
-        // return null;
     }
 
 
@@ -608,3 +615,55 @@ public class Typecheck {
 //     a) if you check the method body, then verify that the return expr type is a subtype of decl ret type
 
 // parse-->1st pass-->hierarchy check-->goal-->result
+
+
+
+
+
+// for f in testcases/hw2/*.java; do
+//     expected=$(cat "$f.out")
+//     actual=$(gradle -q run < "$f")
+//     if [ "$expected" = "$actual" ]; then
+//         echo "PASS: $f"
+//     else
+//         echo "FAIL: $f (expected: $expected, got: $actual)"
+//     fi
+// done
+
+
+
+// ----
+// 18 HW2 tests pass locally
+// parser imports are allowed
+// extra tar contents should be okay acoord. Piazza
+// static-state fix --> didnt do anything
+
+// hidden-test-only bug that somehow also causes public tests to fail remotely?
+// the official autograder is invoking/building code differently from local Gradle?
+// submission-layout expectation not captured by local test?
+
+// So the autograder actually checks the program to see if you use any visitors. Looking at the autograder output it's printing 
+
+// cannot find any visitor being used
+// for every test case, so that's why it's passing on gradle pregrade but not on the autograder. You'll need to use the visitor pattern by extending the default visitors instead of calling instanceof.
+
+
+//fix plan:
+// keep:
+// global maps (clparent, cflds, cmtds, mainCN)
+// validHierarch 
+// buildMTD, makeFLDMap, addParam, findMTD, doSigsMatch, primOrCLName, isSub, toString (helpers)
+// type checking logic (still same rules)
+
+// change:
+// firstPass needs to use visitors --> same logic but inside a visitor class with visit methods
+// accept nodes instead of calling checkstmt etc.
+// checkStmt, checkExpr, checkPrim, checkMTDCall into one larger tcVisitor 
+//     if (s instanceof IfStatement) --> public String visit(IfStatement n, Map<String, String> env)
+// firstPass(goal); --> javagoal.accept(new fpVisitor(), null);
+// validHierarch(); --> validHierarch();
+// tcGoal(goal); --> goal.accept(new tcVisitor(), null);
+
+
+
+
