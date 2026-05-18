@@ -1,1 +1,51 @@
-Program type checked successfully
+func Factorial()
+  tmp0 = 4
+  tmp1 = alloc(tmp0)
+  tmp2 = @Fac_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = 10
+  tmp5 = [tmp1+0]
+  tmp6 = [tmp5+0]
+  tmp7 = call tmp6(tmp1 tmp4)
+  print(tmp7)
+  tmp8 = 0
+  return tmp8
+
+func Fac_ComputeFac(this num)
+  num_aux = 0
+  tmp9 = 1
+  tmp10 = num < tmp9
+  if0 tmp10 goto lbl2
+  tmp11 = 1
+  num_aux = tmp11
+  goto lbl3
+  lbl2:
+  if0 this goto lbl5
+  goto lbl4
+  lbl5:
+  error("null pointer")
+  lbl4:
+  tmp12 = 1
+  tmp13 = num - tmp12
+  tmp14 = [this+0]
+  tmp15 = [tmp14+0]
+  tmp16 = call tmp15(this tmp13)
+  tmp17 = num * tmp16
+  num_aux = tmp17
+  lbl3:
+  return num_aux
+
+func Fac_vtinit(this)
+  vtsize = 4
+  vt = alloc(vtsize)
+  vfp0 = @Fac_ComputeFac
+  [vt+0] = vfp0
+  [this+0] = vt
+  ret = 0
+  return ret
+

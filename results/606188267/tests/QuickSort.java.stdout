@@ -1,1 +1,652 @@
-Program type checked successfully
+func QuickSort()
+  tmp0 = 12
+  tmp1 = alloc(tmp0)
+  tmp2 = @QS_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = 10
+  tmp5 = [tmp1+0]
+  tmp6 = [tmp5+0]
+  tmp7 = call tmp6(tmp1 tmp4)
+  print(tmp7)
+  tmp8 = 0
+  return tmp8
+
+func QS_Start(this sz)
+  aux01 = 0
+  if0 this goto lbl3
+  goto lbl2
+  lbl3:
+  error("null pointer")
+  lbl2:
+  tmp9 = [this+0]
+  tmp10 = [tmp9+12]
+  tmp11 = call tmp10(this sz)
+  aux01 = tmp11
+  if0 this goto lbl5
+  goto lbl4
+  lbl5:
+  error("null pointer")
+  lbl4:
+  tmp12 = [this+0]
+  tmp13 = [tmp12+8]
+  tmp14 = call tmp13(this)
+  aux01 = tmp14
+  tmp15 = 9999
+  print(tmp15)
+  tmp16 = [this+8]
+  tmp17 = 1
+  tmp18 = tmp16 - tmp17
+  aux01 = tmp18
+  if0 this goto lbl7
+  goto lbl6
+  lbl7:
+  error("null pointer")
+  lbl6:
+  tmp19 = 0
+  tmp20 = [this+0]
+  tmp21 = [tmp20+4]
+  tmp22 = call tmp21(this tmp19 aux01)
+  aux01 = tmp22
+  if0 this goto lbl9
+  goto lbl8
+  lbl9:
+  error("null pointer")
+  lbl8:
+  tmp23 = [this+0]
+  tmp24 = [tmp23+8]
+  tmp25 = call tmp24(this)
+  aux01 = tmp25
+  tmp26 = 0
+  return tmp26
+
+func QS_Sort(this left right)
+  v = 0
+  i = 0
+  j = 0
+  nt = 0
+  t = 0
+  cont01 = 0
+  cont02 = 0
+  aux03 = 0
+  tmp27 = 0
+  t = tmp27
+  tmp28 = left < right
+  if0 tmp28 goto lbl10
+  tmp29 = [this+4]
+  tmp35 = [tmp29+0]
+  tmp36 = 0
+  tmp37 = right < tmp36
+  if0 tmp37 goto lbl12
+  error("array index out of bounds")
+  lbl12:
+  tmp38 = right < tmp35
+  if0 tmp38 goto lbl14
+  goto lbl13
+  lbl14:
+  error("array index out of bounds")
+  lbl13:
+  tmp30 = 4
+  tmp31 = right * tmp30
+  tmp32 = tmp31 + tmp30
+  tmp33 = tmp29 + tmp32
+  tmp34 = [tmp33+0]
+  v = tmp34
+  tmp39 = 1
+  tmp40 = left - tmp39
+  i = tmp40
+  j = right
+  tmp41 = 1
+  cont01 = tmp41
+  lbl15:
+  if0 cont01 goto lbl16
+  tmp42 = 1
+  cont02 = tmp42
+  lbl17:
+  if0 cont02 goto lbl18
+  tmp43 = 1
+  tmp44 = i + tmp43
+  i = tmp44
+  tmp45 = [this+4]
+  tmp51 = [tmp45+0]
+  tmp52 = 0
+  tmp53 = i < tmp52
+  if0 tmp53 goto lbl19
+  error("array index out of bounds")
+  lbl19:
+  tmp54 = i < tmp51
+  if0 tmp54 goto lbl21
+  goto lbl20
+  lbl21:
+  error("array index out of bounds")
+  lbl20:
+  tmp46 = 4
+  tmp47 = i * tmp46
+  tmp48 = tmp47 + tmp46
+  tmp49 = tmp45 + tmp48
+  tmp50 = [tmp49+0]
+  aux03 = tmp50
+  tmp55 = aux03 < v
+  tmp56 = 1
+  tmp57 = tmp56 - tmp55
+  if0 tmp57 goto lbl22
+  tmp58 = 0
+  cont02 = tmp58
+  goto lbl23
+  lbl22:
+  tmp59 = 1
+  cont02 = tmp59
+  lbl23:
+  goto lbl17
+  lbl18:
+  tmp60 = 1
+  cont02 = tmp60
+  lbl24:
+  if0 cont02 goto lbl25
+  tmp61 = 1
+  tmp62 = j - tmp61
+  j = tmp62
+  tmp63 = [this+4]
+  tmp69 = [tmp63+0]
+  tmp70 = 0
+  tmp71 = j < tmp70
+  if0 tmp71 goto lbl26
+  error("array index out of bounds")
+  lbl26:
+  tmp72 = j < tmp69
+  if0 tmp72 goto lbl28
+  goto lbl27
+  lbl28:
+  error("array index out of bounds")
+  lbl27:
+  tmp64 = 4
+  tmp65 = j * tmp64
+  tmp66 = tmp65 + tmp64
+  tmp67 = tmp63 + tmp66
+  tmp68 = [tmp67+0]
+  aux03 = tmp68
+  tmp73 = v < aux03
+  tmp74 = 1
+  tmp75 = tmp74 - tmp73
+  if0 tmp75 goto lbl29
+  tmp76 = 0
+  cont02 = tmp76
+  goto lbl30
+  lbl29:
+  tmp77 = 1
+  cont02 = tmp77
+  lbl30:
+  goto lbl24
+  lbl25:
+  tmp78 = [this+4]
+  tmp84 = [tmp78+0]
+  tmp85 = 0
+  tmp86 = i < tmp85
+  if0 tmp86 goto lbl31
+  error("array index out of bounds")
+  lbl31:
+  tmp87 = i < tmp84
+  if0 tmp87 goto lbl33
+  goto lbl32
+  lbl33:
+  error("array index out of bounds")
+  lbl32:
+  tmp79 = 4
+  tmp80 = i * tmp79
+  tmp81 = tmp80 + tmp79
+  tmp82 = tmp78 + tmp81
+  tmp83 = [tmp82+0]
+  t = tmp83
+  tmp88 = [this+4]
+  tmp89 = [this+4]
+  tmp95 = [tmp89+0]
+  tmp96 = 0
+  tmp97 = j < tmp96
+  if0 tmp97 goto lbl34
+  error("array index out of bounds")
+  lbl34:
+  tmp98 = j < tmp95
+  if0 tmp98 goto lbl36
+  goto lbl35
+  lbl36:
+  error("array index out of bounds")
+  lbl35:
+  tmp90 = 4
+  tmp91 = j * tmp90
+  tmp92 = tmp91 + tmp90
+  tmp93 = tmp89 + tmp92
+  tmp94 = [tmp93+0]
+  tmp99 = [tmp88+0]
+  tmp100 = 0
+  tmp101 = i < tmp100
+  if0 tmp101 goto lbl37
+  error("array index out of bounds")
+  lbl37:
+  tmp102 = i < tmp99
+  if0 tmp102 goto lbl39
+  goto lbl38
+  lbl39:
+  error("array index out of bounds")
+  lbl38:
+  tmp103 = 4
+  tmp104 = i * tmp103
+  tmp105 = tmp104 + tmp103
+  tmp106 = tmp88 + tmp105
+  [tmp106+0] = tmp94
+  tmp107 = [this+4]
+  tmp108 = [tmp107+0]
+  tmp109 = 0
+  tmp110 = j < tmp109
+  if0 tmp110 goto lbl40
+  error("array index out of bounds")
+  lbl40:
+  tmp111 = j < tmp108
+  if0 tmp111 goto lbl42
+  goto lbl41
+  lbl42:
+  error("array index out of bounds")
+  lbl41:
+  tmp112 = 4
+  tmp113 = j * tmp112
+  tmp114 = tmp113 + tmp112
+  tmp115 = tmp107 + tmp114
+  [tmp115+0] = t
+  tmp116 = 1
+  tmp117 = i + tmp116
+  tmp118 = j < tmp117
+  if0 tmp118 goto lbl43
+  tmp119 = 0
+  cont01 = tmp119
+  goto lbl44
+  lbl43:
+  tmp120 = 1
+  cont01 = tmp120
+  lbl44:
+  goto lbl15
+  lbl16:
+  tmp121 = [this+4]
+  tmp122 = [this+4]
+  tmp128 = [tmp122+0]
+  tmp129 = 0
+  tmp130 = i < tmp129
+  if0 tmp130 goto lbl45
+  error("array index out of bounds")
+  lbl45:
+  tmp131 = i < tmp128
+  if0 tmp131 goto lbl47
+  goto lbl46
+  lbl47:
+  error("array index out of bounds")
+  lbl46:
+  tmp123 = 4
+  tmp124 = i * tmp123
+  tmp125 = tmp124 + tmp123
+  tmp126 = tmp122 + tmp125
+  tmp127 = [tmp126+0]
+  tmp132 = [tmp121+0]
+  tmp133 = 0
+  tmp134 = j < tmp133
+  if0 tmp134 goto lbl48
+  error("array index out of bounds")
+  lbl48:
+  tmp135 = j < tmp132
+  if0 tmp135 goto lbl50
+  goto lbl49
+  lbl50:
+  error("array index out of bounds")
+  lbl49:
+  tmp136 = 4
+  tmp137 = j * tmp136
+  tmp138 = tmp137 + tmp136
+  tmp139 = tmp121 + tmp138
+  [tmp139+0] = tmp127
+  tmp140 = [this+4]
+  tmp141 = [this+4]
+  tmp147 = [tmp141+0]
+  tmp148 = 0
+  tmp149 = right < tmp148
+  if0 tmp149 goto lbl51
+  error("array index out of bounds")
+  lbl51:
+  tmp150 = right < tmp147
+  if0 tmp150 goto lbl53
+  goto lbl52
+  lbl53:
+  error("array index out of bounds")
+  lbl52:
+  tmp142 = 4
+  tmp143 = right * tmp142
+  tmp144 = tmp143 + tmp142
+  tmp145 = tmp141 + tmp144
+  tmp146 = [tmp145+0]
+  tmp151 = [tmp140+0]
+  tmp152 = 0
+  tmp153 = i < tmp152
+  if0 tmp153 goto lbl54
+  error("array index out of bounds")
+  lbl54:
+  tmp154 = i < tmp151
+  if0 tmp154 goto lbl56
+  goto lbl55
+  lbl56:
+  error("array index out of bounds")
+  lbl55:
+  tmp155 = 4
+  tmp156 = i * tmp155
+  tmp157 = tmp156 + tmp155
+  tmp158 = tmp140 + tmp157
+  [tmp158+0] = tmp146
+  tmp159 = [this+4]
+  tmp160 = [tmp159+0]
+  tmp161 = 0
+  tmp162 = right < tmp161
+  if0 tmp162 goto lbl57
+  error("array index out of bounds")
+  lbl57:
+  tmp163 = right < tmp160
+  if0 tmp163 goto lbl59
+  goto lbl58
+  lbl59:
+  error("array index out of bounds")
+  lbl58:
+  tmp164 = 4
+  tmp165 = right * tmp164
+  tmp166 = tmp165 + tmp164
+  tmp167 = tmp159 + tmp166
+  [tmp167+0] = t
+  if0 this goto lbl61
+  goto lbl60
+  lbl61:
+  error("null pointer")
+  lbl60:
+  tmp168 = 1
+  tmp169 = i - tmp168
+  tmp170 = [this+0]
+  tmp171 = [tmp170+4]
+  tmp172 = call tmp171(this left tmp169)
+  nt = tmp172
+  if0 this goto lbl63
+  goto lbl62
+  lbl63:
+  error("null pointer")
+  lbl62:
+  tmp173 = 1
+  tmp174 = i + tmp173
+  tmp175 = [this+0]
+  tmp176 = [tmp175+4]
+  tmp177 = call tmp176(this tmp174 right)
+  nt = tmp177
+  goto lbl11
+  lbl10:
+  tmp178 = 0
+  nt = tmp178
+  lbl11:
+  tmp179 = 0
+  return tmp179
+
+func QS_Print(this)
+  j = 0
+  tmp180 = 0
+  j = tmp180
+  lbl64:
+  tmp181 = [this+8]
+  tmp182 = j < tmp181
+  if0 tmp182 goto lbl65
+  tmp183 = [this+4]
+  tmp189 = [tmp183+0]
+  tmp190 = 0
+  tmp191 = j < tmp190
+  if0 tmp191 goto lbl66
+  error("array index out of bounds")
+  lbl66:
+  tmp192 = j < tmp189
+  if0 tmp192 goto lbl68
+  goto lbl67
+  lbl68:
+  error("array index out of bounds")
+  lbl67:
+  tmp184 = 4
+  tmp185 = j * tmp184
+  tmp186 = tmp185 + tmp184
+  tmp187 = tmp183 + tmp186
+  tmp188 = [tmp187+0]
+  print(tmp188)
+  tmp193 = 1
+  tmp194 = j + tmp193
+  j = tmp194
+  goto lbl64
+  lbl65:
+  tmp195 = 0
+  return tmp195
+
+func QS_Init(this sz)
+  [this+8] = sz
+  tmp196 = 1
+  tmp197 = sz + tmp196
+  tmp198 = 4
+  tmp199 = tmp197 * tmp198
+  tmp200 = alloc(tmp199)
+  [tmp200+0] = sz
+  [this+4] = tmp200
+  tmp201 = [this+4]
+  tmp202 = 0
+  tmp203 = 20
+  tmp204 = [tmp201+0]
+  tmp205 = 0
+  tmp206 = tmp202 < tmp205
+  if0 tmp206 goto lbl69
+  error("array index out of bounds")
+  lbl69:
+  tmp207 = tmp202 < tmp204
+  if0 tmp207 goto lbl71
+  goto lbl70
+  lbl71:
+  error("array index out of bounds")
+  lbl70:
+  tmp208 = 4
+  tmp209 = tmp202 * tmp208
+  tmp210 = tmp209 + tmp208
+  tmp211 = tmp201 + tmp210
+  [tmp211+0] = tmp203
+  tmp212 = [this+4]
+  tmp213 = 1
+  tmp214 = 7
+  tmp215 = [tmp212+0]
+  tmp216 = 0
+  tmp217 = tmp213 < tmp216
+  if0 tmp217 goto lbl72
+  error("array index out of bounds")
+  lbl72:
+  tmp218 = tmp213 < tmp215
+  if0 tmp218 goto lbl74
+  goto lbl73
+  lbl74:
+  error("array index out of bounds")
+  lbl73:
+  tmp219 = 4
+  tmp220 = tmp213 * tmp219
+  tmp221 = tmp220 + tmp219
+  tmp222 = tmp212 + tmp221
+  [tmp222+0] = tmp214
+  tmp223 = [this+4]
+  tmp224 = 2
+  tmp225 = 12
+  tmp226 = [tmp223+0]
+  tmp227 = 0
+  tmp228 = tmp224 < tmp227
+  if0 tmp228 goto lbl75
+  error("array index out of bounds")
+  lbl75:
+  tmp229 = tmp224 < tmp226
+  if0 tmp229 goto lbl77
+  goto lbl76
+  lbl77:
+  error("array index out of bounds")
+  lbl76:
+  tmp230 = 4
+  tmp231 = tmp224 * tmp230
+  tmp232 = tmp231 + tmp230
+  tmp233 = tmp223 + tmp232
+  [tmp233+0] = tmp225
+  tmp234 = [this+4]
+  tmp235 = 3
+  tmp236 = 18
+  tmp237 = [tmp234+0]
+  tmp238 = 0
+  tmp239 = tmp235 < tmp238
+  if0 tmp239 goto lbl78
+  error("array index out of bounds")
+  lbl78:
+  tmp240 = tmp235 < tmp237
+  if0 tmp240 goto lbl80
+  goto lbl79
+  lbl80:
+  error("array index out of bounds")
+  lbl79:
+  tmp241 = 4
+  tmp242 = tmp235 * tmp241
+  tmp243 = tmp242 + tmp241
+  tmp244 = tmp234 + tmp243
+  [tmp244+0] = tmp236
+  tmp245 = [this+4]
+  tmp246 = 4
+  tmp247 = 2
+  tmp248 = [tmp245+0]
+  tmp249 = 0
+  tmp250 = tmp246 < tmp249
+  if0 tmp250 goto lbl81
+  error("array index out of bounds")
+  lbl81:
+  tmp251 = tmp246 < tmp248
+  if0 tmp251 goto lbl83
+  goto lbl82
+  lbl83:
+  error("array index out of bounds")
+  lbl82:
+  tmp252 = 4
+  tmp253 = tmp246 * tmp252
+  tmp254 = tmp253 + tmp252
+  tmp255 = tmp245 + tmp254
+  [tmp255+0] = tmp247
+  tmp256 = [this+4]
+  tmp257 = 5
+  tmp258 = 11
+  tmp259 = [tmp256+0]
+  tmp260 = 0
+  tmp261 = tmp257 < tmp260
+  if0 tmp261 goto lbl84
+  error("array index out of bounds")
+  lbl84:
+  tmp262 = tmp257 < tmp259
+  if0 tmp262 goto lbl86
+  goto lbl85
+  lbl86:
+  error("array index out of bounds")
+  lbl85:
+  tmp263 = 4
+  tmp264 = tmp257 * tmp263
+  tmp265 = tmp264 + tmp263
+  tmp266 = tmp256 + tmp265
+  [tmp266+0] = tmp258
+  tmp267 = [this+4]
+  tmp268 = 6
+  tmp269 = 6
+  tmp270 = [tmp267+0]
+  tmp271 = 0
+  tmp272 = tmp268 < tmp271
+  if0 tmp272 goto lbl87
+  error("array index out of bounds")
+  lbl87:
+  tmp273 = tmp268 < tmp270
+  if0 tmp273 goto lbl89
+  goto lbl88
+  lbl89:
+  error("array index out of bounds")
+  lbl88:
+  tmp274 = 4
+  tmp275 = tmp268 * tmp274
+  tmp276 = tmp275 + tmp274
+  tmp277 = tmp267 + tmp276
+  [tmp277+0] = tmp269
+  tmp278 = [this+4]
+  tmp279 = 7
+  tmp280 = 9
+  tmp281 = [tmp278+0]
+  tmp282 = 0
+  tmp283 = tmp279 < tmp282
+  if0 tmp283 goto lbl90
+  error("array index out of bounds")
+  lbl90:
+  tmp284 = tmp279 < tmp281
+  if0 tmp284 goto lbl92
+  goto lbl91
+  lbl92:
+  error("array index out of bounds")
+  lbl91:
+  tmp285 = 4
+  tmp286 = tmp279 * tmp285
+  tmp287 = tmp286 + tmp285
+  tmp288 = tmp278 + tmp287
+  [tmp288+0] = tmp280
+  tmp289 = [this+4]
+  tmp290 = 8
+  tmp291 = 19
+  tmp292 = [tmp289+0]
+  tmp293 = 0
+  tmp294 = tmp290 < tmp293
+  if0 tmp294 goto lbl93
+  error("array index out of bounds")
+  lbl93:
+  tmp295 = tmp290 < tmp292
+  if0 tmp295 goto lbl95
+  goto lbl94
+  lbl95:
+  error("array index out of bounds")
+  lbl94:
+  tmp296 = 4
+  tmp297 = tmp290 * tmp296
+  tmp298 = tmp297 + tmp296
+  tmp299 = tmp289 + tmp298
+  [tmp299+0] = tmp291
+  tmp300 = [this+4]
+  tmp301 = 9
+  tmp302 = 5
+  tmp303 = [tmp300+0]
+  tmp304 = 0
+  tmp305 = tmp301 < tmp304
+  if0 tmp305 goto lbl96
+  error("array index out of bounds")
+  lbl96:
+  tmp306 = tmp301 < tmp303
+  if0 tmp306 goto lbl98
+  goto lbl97
+  lbl98:
+  error("array index out of bounds")
+  lbl97:
+  tmp307 = 4
+  tmp308 = tmp301 * tmp307
+  tmp309 = tmp308 + tmp307
+  tmp310 = tmp300 + tmp309
+  [tmp310+0] = tmp302
+  tmp311 = 0
+  return tmp311
+
+func QS_vtinit(this)
+  vtsize = 16
+  vt = alloc(vtsize)
+  vfp0 = @QS_Start
+  [vt+0] = vfp0
+  vfp1 = @QS_Sort
+  [vt+4] = vfp1
+  vfp2 = @QS_Print
+  [vt+8] = vfp2
+  vfp3 = @QS_Init
+  [vt+12] = vfp3
+  [this+0] = vt
+  ret = 0
+  return ret
+

@@ -1,1 +1,488 @@
-Program type checked successfully
+func BubbleSort()
+  tmp0 = 12
+  tmp1 = alloc(tmp0)
+  tmp2 = @BBS_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = 10
+  tmp5 = [tmp1+0]
+  tmp6 = [tmp5+0]
+  tmp7 = call tmp6(tmp1 tmp4)
+  print(tmp7)
+  tmp8 = 0
+  return tmp8
+
+func BBS_Start(this sz)
+  aux01 = 0
+  if0 this goto lbl3
+  goto lbl2
+  lbl3:
+  error("null pointer")
+  lbl2:
+  tmp9 = [this+0]
+  tmp10 = [tmp9+12]
+  tmp11 = call tmp10(this sz)
+  aux01 = tmp11
+  if0 this goto lbl5
+  goto lbl4
+  lbl5:
+  error("null pointer")
+  lbl4:
+  tmp12 = [this+0]
+  tmp13 = [tmp12+8]
+  tmp14 = call tmp13(this)
+  aux01 = tmp14
+  tmp15 = 99999
+  print(tmp15)
+  if0 this goto lbl7
+  goto lbl6
+  lbl7:
+  error("null pointer")
+  lbl6:
+  tmp16 = [this+0]
+  tmp17 = [tmp16+4]
+  tmp18 = call tmp17(this)
+  aux01 = tmp18
+  if0 this goto lbl9
+  goto lbl8
+  lbl9:
+  error("null pointer")
+  lbl8:
+  tmp19 = [this+0]
+  tmp20 = [tmp19+8]
+  tmp21 = call tmp20(this)
+  aux01 = tmp21
+  tmp22 = 0
+  return tmp22
+
+func BBS_Sort(this)
+  nt = 0
+  i = 0
+  aux02 = 0
+  aux04 = 0
+  aux05 = 0
+  aux06 = 0
+  aux07 = 0
+  j = 0
+  t = 0
+  tmp23 = [this+8]
+  tmp24 = 1
+  tmp25 = tmp23 - tmp24
+  i = tmp25
+  tmp26 = 0
+  tmp27 = 1
+  tmp28 = tmp26 - tmp27
+  aux02 = tmp28
+  lbl10:
+  tmp29 = aux02 < i
+  if0 tmp29 goto lbl11
+  tmp30 = 1
+  j = tmp30
+  lbl12:
+  tmp31 = 1
+  tmp32 = i + tmp31
+  tmp33 = j < tmp32
+  if0 tmp33 goto lbl13
+  tmp34 = 1
+  tmp35 = j - tmp34
+  aux07 = tmp35
+  tmp36 = [this+4]
+  tmp42 = [tmp36+0]
+  tmp43 = 0
+  tmp44 = aux07 < tmp43
+  if0 tmp44 goto lbl14
+  error("array index out of bounds")
+  lbl14:
+  tmp45 = aux07 < tmp42
+  if0 tmp45 goto lbl16
+  goto lbl15
+  lbl16:
+  error("array index out of bounds")
+  lbl15:
+  tmp37 = 4
+  tmp38 = aux07 * tmp37
+  tmp39 = tmp38 + tmp37
+  tmp40 = tmp36 + tmp39
+  tmp41 = [tmp40+0]
+  aux04 = tmp41
+  tmp46 = [this+4]
+  tmp52 = [tmp46+0]
+  tmp53 = 0
+  tmp54 = j < tmp53
+  if0 tmp54 goto lbl17
+  error("array index out of bounds")
+  lbl17:
+  tmp55 = j < tmp52
+  if0 tmp55 goto lbl19
+  goto lbl18
+  lbl19:
+  error("array index out of bounds")
+  lbl18:
+  tmp47 = 4
+  tmp48 = j * tmp47
+  tmp49 = tmp48 + tmp47
+  tmp50 = tmp46 + tmp49
+  tmp51 = [tmp50+0]
+  aux05 = tmp51
+  tmp56 = aux05 < aux04
+  if0 tmp56 goto lbl20
+  tmp57 = 1
+  tmp58 = j - tmp57
+  aux06 = tmp58
+  tmp59 = [this+4]
+  tmp65 = [tmp59+0]
+  tmp66 = 0
+  tmp67 = aux06 < tmp66
+  if0 tmp67 goto lbl22
+  error("array index out of bounds")
+  lbl22:
+  tmp68 = aux06 < tmp65
+  if0 tmp68 goto lbl24
+  goto lbl23
+  lbl24:
+  error("array index out of bounds")
+  lbl23:
+  tmp60 = 4
+  tmp61 = aux06 * tmp60
+  tmp62 = tmp61 + tmp60
+  tmp63 = tmp59 + tmp62
+  tmp64 = [tmp63+0]
+  t = tmp64
+  tmp69 = [this+4]
+  tmp70 = [this+4]
+  tmp76 = [tmp70+0]
+  tmp77 = 0
+  tmp78 = j < tmp77
+  if0 tmp78 goto lbl25
+  error("array index out of bounds")
+  lbl25:
+  tmp79 = j < tmp76
+  if0 tmp79 goto lbl27
+  goto lbl26
+  lbl27:
+  error("array index out of bounds")
+  lbl26:
+  tmp71 = 4
+  tmp72 = j * tmp71
+  tmp73 = tmp72 + tmp71
+  tmp74 = tmp70 + tmp73
+  tmp75 = [tmp74+0]
+  tmp80 = [tmp69+0]
+  tmp81 = 0
+  tmp82 = aux06 < tmp81
+  if0 tmp82 goto lbl28
+  error("array index out of bounds")
+  lbl28:
+  tmp83 = aux06 < tmp80
+  if0 tmp83 goto lbl30
+  goto lbl29
+  lbl30:
+  error("array index out of bounds")
+  lbl29:
+  tmp84 = 4
+  tmp85 = aux06 * tmp84
+  tmp86 = tmp85 + tmp84
+  tmp87 = tmp69 + tmp86
+  [tmp87+0] = tmp75
+  tmp88 = [this+4]
+  tmp89 = [tmp88+0]
+  tmp90 = 0
+  tmp91 = j < tmp90
+  if0 tmp91 goto lbl31
+  error("array index out of bounds")
+  lbl31:
+  tmp92 = j < tmp89
+  if0 tmp92 goto lbl33
+  goto lbl32
+  lbl33:
+  error("array index out of bounds")
+  lbl32:
+  tmp93 = 4
+  tmp94 = j * tmp93
+  tmp95 = tmp94 + tmp93
+  tmp96 = tmp88 + tmp95
+  [tmp96+0] = t
+  goto lbl21
+  lbl20:
+  tmp97 = 0
+  nt = tmp97
+  lbl21:
+  tmp98 = 1
+  tmp99 = j + tmp98
+  j = tmp99
+  goto lbl12
+  lbl13:
+  tmp100 = 1
+  tmp101 = i - tmp100
+  i = tmp101
+  goto lbl10
+  lbl11:
+  tmp102 = 0
+  return tmp102
+
+func BBS_Print(this)
+  j = 0
+  tmp103 = 0
+  j = tmp103
+  lbl34:
+  tmp104 = [this+8]
+  tmp105 = j < tmp104
+  if0 tmp105 goto lbl35
+  tmp106 = [this+4]
+  tmp112 = [tmp106+0]
+  tmp113 = 0
+  tmp114 = j < tmp113
+  if0 tmp114 goto lbl36
+  error("array index out of bounds")
+  lbl36:
+  tmp115 = j < tmp112
+  if0 tmp115 goto lbl38
+  goto lbl37
+  lbl38:
+  error("array index out of bounds")
+  lbl37:
+  tmp107 = 4
+  tmp108 = j * tmp107
+  tmp109 = tmp108 + tmp107
+  tmp110 = tmp106 + tmp109
+  tmp111 = [tmp110+0]
+  print(tmp111)
+  tmp116 = 1
+  tmp117 = j + tmp116
+  j = tmp117
+  goto lbl34
+  lbl35:
+  tmp118 = 0
+  return tmp118
+
+func BBS_Init(this sz)
+  [this+8] = sz
+  tmp119 = 1
+  tmp120 = sz + tmp119
+  tmp121 = 4
+  tmp122 = tmp120 * tmp121
+  tmp123 = alloc(tmp122)
+  [tmp123+0] = sz
+  [this+4] = tmp123
+  tmp124 = [this+4]
+  tmp125 = 0
+  tmp126 = 20
+  tmp127 = [tmp124+0]
+  tmp128 = 0
+  tmp129 = tmp125 < tmp128
+  if0 tmp129 goto lbl39
+  error("array index out of bounds")
+  lbl39:
+  tmp130 = tmp125 < tmp127
+  if0 tmp130 goto lbl41
+  goto lbl40
+  lbl41:
+  error("array index out of bounds")
+  lbl40:
+  tmp131 = 4
+  tmp132 = tmp125 * tmp131
+  tmp133 = tmp132 + tmp131
+  tmp134 = tmp124 + tmp133
+  [tmp134+0] = tmp126
+  tmp135 = [this+4]
+  tmp136 = 1
+  tmp137 = 7
+  tmp138 = [tmp135+0]
+  tmp139 = 0
+  tmp140 = tmp136 < tmp139
+  if0 tmp140 goto lbl42
+  error("array index out of bounds")
+  lbl42:
+  tmp141 = tmp136 < tmp138
+  if0 tmp141 goto lbl44
+  goto lbl43
+  lbl44:
+  error("array index out of bounds")
+  lbl43:
+  tmp142 = 4
+  tmp143 = tmp136 * tmp142
+  tmp144 = tmp143 + tmp142
+  tmp145 = tmp135 + tmp144
+  [tmp145+0] = tmp137
+  tmp146 = [this+4]
+  tmp147 = 2
+  tmp148 = 12
+  tmp149 = [tmp146+0]
+  tmp150 = 0
+  tmp151 = tmp147 < tmp150
+  if0 tmp151 goto lbl45
+  error("array index out of bounds")
+  lbl45:
+  tmp152 = tmp147 < tmp149
+  if0 tmp152 goto lbl47
+  goto lbl46
+  lbl47:
+  error("array index out of bounds")
+  lbl46:
+  tmp153 = 4
+  tmp154 = tmp147 * tmp153
+  tmp155 = tmp154 + tmp153
+  tmp156 = tmp146 + tmp155
+  [tmp156+0] = tmp148
+  tmp157 = [this+4]
+  tmp158 = 3
+  tmp159 = 18
+  tmp160 = [tmp157+0]
+  tmp161 = 0
+  tmp162 = tmp158 < tmp161
+  if0 tmp162 goto lbl48
+  error("array index out of bounds")
+  lbl48:
+  tmp163 = tmp158 < tmp160
+  if0 tmp163 goto lbl50
+  goto lbl49
+  lbl50:
+  error("array index out of bounds")
+  lbl49:
+  tmp164 = 4
+  tmp165 = tmp158 * tmp164
+  tmp166 = tmp165 + tmp164
+  tmp167 = tmp157 + tmp166
+  [tmp167+0] = tmp159
+  tmp168 = [this+4]
+  tmp169 = 4
+  tmp170 = 2
+  tmp171 = [tmp168+0]
+  tmp172 = 0
+  tmp173 = tmp169 < tmp172
+  if0 tmp173 goto lbl51
+  error("array index out of bounds")
+  lbl51:
+  tmp174 = tmp169 < tmp171
+  if0 tmp174 goto lbl53
+  goto lbl52
+  lbl53:
+  error("array index out of bounds")
+  lbl52:
+  tmp175 = 4
+  tmp176 = tmp169 * tmp175
+  tmp177 = tmp176 + tmp175
+  tmp178 = tmp168 + tmp177
+  [tmp178+0] = tmp170
+  tmp179 = [this+4]
+  tmp180 = 5
+  tmp181 = 11
+  tmp182 = [tmp179+0]
+  tmp183 = 0
+  tmp184 = tmp180 < tmp183
+  if0 tmp184 goto lbl54
+  error("array index out of bounds")
+  lbl54:
+  tmp185 = tmp180 < tmp182
+  if0 tmp185 goto lbl56
+  goto lbl55
+  lbl56:
+  error("array index out of bounds")
+  lbl55:
+  tmp186 = 4
+  tmp187 = tmp180 * tmp186
+  tmp188 = tmp187 + tmp186
+  tmp189 = tmp179 + tmp188
+  [tmp189+0] = tmp181
+  tmp190 = [this+4]
+  tmp191 = 6
+  tmp192 = 6
+  tmp193 = [tmp190+0]
+  tmp194 = 0
+  tmp195 = tmp191 < tmp194
+  if0 tmp195 goto lbl57
+  error("array index out of bounds")
+  lbl57:
+  tmp196 = tmp191 < tmp193
+  if0 tmp196 goto lbl59
+  goto lbl58
+  lbl59:
+  error("array index out of bounds")
+  lbl58:
+  tmp197 = 4
+  tmp198 = tmp191 * tmp197
+  tmp199 = tmp198 + tmp197
+  tmp200 = tmp190 + tmp199
+  [tmp200+0] = tmp192
+  tmp201 = [this+4]
+  tmp202 = 7
+  tmp203 = 9
+  tmp204 = [tmp201+0]
+  tmp205 = 0
+  tmp206 = tmp202 < tmp205
+  if0 tmp206 goto lbl60
+  error("array index out of bounds")
+  lbl60:
+  tmp207 = tmp202 < tmp204
+  if0 tmp207 goto lbl62
+  goto lbl61
+  lbl62:
+  error("array index out of bounds")
+  lbl61:
+  tmp208 = 4
+  tmp209 = tmp202 * tmp208
+  tmp210 = tmp209 + tmp208
+  tmp211 = tmp201 + tmp210
+  [tmp211+0] = tmp203
+  tmp212 = [this+4]
+  tmp213 = 8
+  tmp214 = 19
+  tmp215 = [tmp212+0]
+  tmp216 = 0
+  tmp217 = tmp213 < tmp216
+  if0 tmp217 goto lbl63
+  error("array index out of bounds")
+  lbl63:
+  tmp218 = tmp213 < tmp215
+  if0 tmp218 goto lbl65
+  goto lbl64
+  lbl65:
+  error("array index out of bounds")
+  lbl64:
+  tmp219 = 4
+  tmp220 = tmp213 * tmp219
+  tmp221 = tmp220 + tmp219
+  tmp222 = tmp212 + tmp221
+  [tmp222+0] = tmp214
+  tmp223 = [this+4]
+  tmp224 = 9
+  tmp225 = 5
+  tmp226 = [tmp223+0]
+  tmp227 = 0
+  tmp228 = tmp224 < tmp227
+  if0 tmp228 goto lbl66
+  error("array index out of bounds")
+  lbl66:
+  tmp229 = tmp224 < tmp226
+  if0 tmp229 goto lbl68
+  goto lbl67
+  lbl68:
+  error("array index out of bounds")
+  lbl67:
+  tmp230 = 4
+  tmp231 = tmp224 * tmp230
+  tmp232 = tmp231 + tmp230
+  tmp233 = tmp223 + tmp232
+  [tmp233+0] = tmp225
+  tmp234 = 0
+  return tmp234
+
+func BBS_vtinit(this)
+  vtsize = 16
+  vt = alloc(vtsize)
+  vfp0 = @BBS_Start
+  [vt+0] = vfp0
+  vfp1 = @BBS_Sort
+  [vt+4] = vfp1
+  vfp2 = @BBS_Print
+  [vt+8] = vfp2
+  vfp3 = @BBS_Init
+  [vt+12] = vfp3
+  [this+0] = vt
+  ret = 0
+  return ret
+

@@ -1,1 +1,261 @@
-Program type checked successfully
+func LinearSearch()
+  tmp0 = 12
+  tmp1 = alloc(tmp0)
+  tmp2 = @LS_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = 10
+  tmp5 = [tmp1+0]
+  tmp6 = [tmp5+0]
+  tmp7 = call tmp6(tmp1 tmp4)
+  print(tmp7)
+  tmp8 = 0
+  return tmp8
+
+func LS_Start(this sz)
+  aux01 = 0
+  aux02 = 0
+  if0 this goto lbl3
+  goto lbl2
+  lbl3:
+  error("null pointer")
+  lbl2:
+  tmp9 = [this+0]
+  tmp10 = [tmp9+12]
+  tmp11 = call tmp10(this sz)
+  aux01 = tmp11
+  if0 this goto lbl5
+  goto lbl4
+  lbl5:
+  error("null pointer")
+  lbl4:
+  tmp12 = [this+0]
+  tmp13 = [tmp12+4]
+  tmp14 = call tmp13(this)
+  aux02 = tmp14
+  tmp15 = 9999
+  print(tmp15)
+  if0 this goto lbl7
+  goto lbl6
+  lbl7:
+  error("null pointer")
+  lbl6:
+  tmp16 = 8
+  tmp17 = [this+0]
+  tmp18 = [tmp17+8]
+  tmp19 = call tmp18(this tmp16)
+  print(tmp19)
+  if0 this goto lbl9
+  goto lbl8
+  lbl9:
+  error("null pointer")
+  lbl8:
+  tmp20 = 12
+  tmp21 = [this+0]
+  tmp22 = [tmp21+8]
+  tmp23 = call tmp22(this tmp20)
+  print(tmp23)
+  if0 this goto lbl11
+  goto lbl10
+  lbl11:
+  error("null pointer")
+  lbl10:
+  tmp24 = 17
+  tmp25 = [this+0]
+  tmp26 = [tmp25+8]
+  tmp27 = call tmp26(this tmp24)
+  print(tmp27)
+  if0 this goto lbl13
+  goto lbl12
+  lbl13:
+  error("null pointer")
+  lbl12:
+  tmp28 = 50
+  tmp29 = [this+0]
+  tmp30 = [tmp29+8]
+  tmp31 = call tmp30(this tmp28)
+  print(tmp31)
+  tmp32 = 55
+  return tmp32
+
+func LS_Print(this)
+  j = 0
+  tmp33 = 1
+  j = tmp33
+  lbl14:
+  tmp34 = [this+8]
+  tmp35 = j < tmp34
+  if0 tmp35 goto lbl15
+  tmp36 = [this+4]
+  tmp42 = [tmp36+0]
+  tmp43 = 0
+  tmp44 = j < tmp43
+  if0 tmp44 goto lbl16
+  error("array index out of bounds")
+  lbl16:
+  tmp45 = j < tmp42
+  if0 tmp45 goto lbl18
+  goto lbl17
+  lbl18:
+  error("array index out of bounds")
+  lbl17:
+  tmp37 = 4
+  tmp38 = j * tmp37
+  tmp39 = tmp38 + tmp37
+  tmp40 = tmp36 + tmp39
+  tmp41 = [tmp40+0]
+  print(tmp41)
+  tmp46 = 1
+  tmp47 = j + tmp46
+  j = tmp47
+  goto lbl14
+  lbl15:
+  tmp48 = 0
+  return tmp48
+
+func LS_Search(this num)
+  j = 0
+  ls01 = 0
+  ifound = 0
+  aux01 = 0
+  aux02 = 0
+  nt = 0
+  tmp49 = 1
+  j = tmp49
+  tmp50 = 0
+  ls01 = tmp50
+  tmp51 = 0
+  ifound = tmp51
+  lbl19:
+  tmp52 = [this+8]
+  tmp53 = j < tmp52
+  if0 tmp53 goto lbl20
+  tmp54 = [this+4]
+  tmp60 = [tmp54+0]
+  tmp61 = 0
+  tmp62 = j < tmp61
+  if0 tmp62 goto lbl21
+  error("array index out of bounds")
+  lbl21:
+  tmp63 = j < tmp60
+  if0 tmp63 goto lbl23
+  goto lbl22
+  lbl23:
+  error("array index out of bounds")
+  lbl22:
+  tmp55 = 4
+  tmp56 = j * tmp55
+  tmp57 = tmp56 + tmp55
+  tmp58 = tmp54 + tmp57
+  tmp59 = [tmp58+0]
+  aux01 = tmp59
+  tmp64 = 1
+  tmp65 = num + tmp64
+  aux02 = tmp65
+  tmp66 = aux01 < num
+  if0 tmp66 goto lbl24
+  tmp67 = 0
+  nt = tmp67
+  goto lbl25
+  lbl24:
+  tmp68 = aux01 < aux02
+  tmp69 = 1
+  tmp70 = tmp69 - tmp68
+  if0 tmp70 goto lbl26
+  tmp71 = 0
+  nt = tmp71
+  goto lbl27
+  lbl26:
+  tmp72 = 1
+  ls01 = tmp72
+  tmp73 = 1
+  ifound = tmp73
+  tmp74 = [this+8]
+  j = tmp74
+  lbl27:
+  lbl25:
+  tmp75 = 1
+  tmp76 = j + tmp75
+  j = tmp76
+  goto lbl19
+  lbl20:
+  return ifound
+
+func LS_Init(this sz)
+  j = 0
+  k = 0
+  aux01 = 0
+  aux02 = 0
+  [this+8] = sz
+  tmp77 = 1
+  tmp78 = sz + tmp77
+  tmp79 = 4
+  tmp80 = tmp78 * tmp79
+  tmp81 = alloc(tmp80)
+  [tmp81+0] = sz
+  [this+4] = tmp81
+  tmp82 = 1
+  j = tmp82
+  tmp83 = [this+8]
+  tmp84 = 1
+  tmp85 = tmp83 + tmp84
+  k = tmp85
+  lbl28:
+  tmp86 = [this+8]
+  tmp87 = j < tmp86
+  if0 tmp87 goto lbl29
+  tmp88 = 2
+  tmp89 = tmp88 * j
+  aux01 = tmp89
+  tmp90 = 3
+  tmp91 = k - tmp90
+  aux02 = tmp91
+  tmp92 = [this+4]
+  tmp93 = aux01 + aux02
+  tmp94 = [tmp92+0]
+  tmp95 = 0
+  tmp96 = j < tmp95
+  if0 tmp96 goto lbl30
+  error("array index out of bounds")
+  lbl30:
+  tmp97 = j < tmp94
+  if0 tmp97 goto lbl32
+  goto lbl31
+  lbl32:
+  error("array index out of bounds")
+  lbl31:
+  tmp98 = 4
+  tmp99 = j * tmp98
+  tmp100 = tmp99 + tmp98
+  tmp101 = tmp92 + tmp100
+  [tmp101+0] = tmp93
+  tmp102 = 1
+  tmp103 = j + tmp102
+  j = tmp103
+  tmp104 = 1
+  tmp105 = k - tmp104
+  k = tmp105
+  goto lbl28
+  lbl29:
+  tmp106 = 0
+  return tmp106
+
+func LS_vtinit(this)
+  vtsize = 16
+  vt = alloc(vtsize)
+  vfp0 = @LS_Start
+  [vt+0] = vfp0
+  vfp1 = @LS_Print
+  [vt+4] = vfp1
+  vfp2 = @LS_Search
+  [vt+8] = vfp2
+  vfp3 = @LS_Init
+  [vt+12] = vfp3
+  [this+0] = vt
+  ret = 0
+  return ret
+

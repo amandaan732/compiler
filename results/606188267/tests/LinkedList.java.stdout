@@ -1,1 +1,790 @@
-Program type checked successfully
+func LinkedList()
+  tmp0 = 4
+  tmp1 = alloc(tmp0)
+  tmp2 = @LL_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = [tmp1+0]
+  tmp5 = [tmp4+0]
+  tmp6 = call tmp5(tmp1)
+  print(tmp6)
+  tmp7 = 0
+  return tmp7
+
+func Element_Init(this v_Age v_Salary v_Married)
+  [this+4] = v_Age
+  [this+8] = v_Salary
+  [this+12] = v_Married
+  tmp8 = 1
+  return tmp8
+
+func Element_GetAge(this)
+  tmp9 = [this+4]
+  return tmp9
+
+func Element_GetSalary(this)
+  tmp10 = [this+8]
+  return tmp10
+
+func Element_GetMarried(this)
+  tmp11 = [this+12]
+  return tmp11
+
+func Element_Equal(this other)
+  ret_val = 0
+  aux01 = 0
+  aux02 = 0
+  nt = 0
+  tmp12 = 1
+  ret_val = tmp12
+  if0 other goto lbl3
+  goto lbl2
+  lbl3:
+  error("null pointer")
+  lbl2:
+  tmp13 = [other+0]
+  tmp14 = [tmp13+4]
+  tmp15 = call tmp14(other)
+  aux01 = tmp15
+  if0 this goto lbl7
+  goto lbl6
+  lbl7:
+  error("null pointer")
+  lbl6:
+  tmp16 = [this+4]
+  tmp17 = [this+0]
+  tmp18 = [tmp17+20]
+  tmp19 = call tmp18(this aux01 tmp16)
+  tmp20 = 1
+  tmp21 = tmp20 - tmp19
+  if0 tmp21 goto lbl4
+  tmp22 = 0
+  ret_val = tmp22
+  goto lbl5
+  lbl4:
+  if0 other goto lbl9
+  goto lbl8
+  lbl9:
+  error("null pointer")
+  lbl8:
+  tmp23 = [other+0]
+  tmp24 = [tmp23+8]
+  tmp25 = call tmp24(other)
+  aux02 = tmp25
+  if0 this goto lbl13
+  goto lbl12
+  lbl13:
+  error("null pointer")
+  lbl12:
+  tmp26 = [this+8]
+  tmp27 = [this+0]
+  tmp28 = [tmp27+20]
+  tmp29 = call tmp28(this aux02 tmp26)
+  tmp30 = 1
+  tmp31 = tmp30 - tmp29
+  if0 tmp31 goto lbl10
+  tmp32 = 0
+  ret_val = tmp32
+  goto lbl11
+  lbl10:
+  tmp33 = [this+12]
+  if0 tmp33 goto lbl14
+  if0 other goto lbl19
+  goto lbl18
+  lbl19:
+  error("null pointer")
+  lbl18:
+  tmp34 = [other+0]
+  tmp35 = [tmp34+12]
+  tmp36 = call tmp35(other)
+  tmp37 = 1
+  tmp38 = tmp37 - tmp36
+  if0 tmp38 goto lbl16
+  tmp39 = 0
+  ret_val = tmp39
+  goto lbl17
+  lbl16:
+  tmp40 = 0
+  nt = tmp40
+  lbl17:
+  goto lbl15
+  lbl14:
+  if0 other goto lbl23
+  goto lbl22
+  lbl23:
+  error("null pointer")
+  lbl22:
+  tmp41 = [other+0]
+  tmp42 = [tmp41+12]
+  tmp43 = call tmp42(other)
+  if0 tmp43 goto lbl20
+  tmp44 = 0
+  ret_val = tmp44
+  goto lbl21
+  lbl20:
+  tmp45 = 0
+  nt = tmp45
+  lbl21:
+  lbl15:
+  lbl11:
+  lbl5:
+  return ret_val
+
+func Element_Compare(this num1 num2)
+  retval = 0
+  aux02 = 0
+  tmp46 = 0
+  retval = tmp46
+  tmp47 = 1
+  tmp48 = num2 + tmp47
+  aux02 = tmp48
+  tmp49 = num1 < num2
+  if0 tmp49 goto lbl24
+  tmp50 = 0
+  retval = tmp50
+  goto lbl25
+  lbl24:
+  tmp51 = num1 < aux02
+  tmp52 = 1
+  tmp53 = tmp52 - tmp51
+  if0 tmp53 goto lbl26
+  tmp54 = 0
+  retval = tmp54
+  goto lbl27
+  lbl26:
+  tmp55 = 1
+  retval = tmp55
+  lbl27:
+  lbl25:
+  return retval
+
+func List_Init(this)
+  tmp56 = 1
+  [this+12] = tmp56
+  tmp57 = 1
+  return tmp57
+
+func List_InitNew(this v_elem v_next v_end)
+  [this+12] = v_end
+  [this+4] = v_elem
+  [this+8] = v_next
+  tmp58 = 1
+  return tmp58
+
+func List_Insert(this new_elem)
+  ret_val = 0
+  aux03 = 0
+  aux02 = 0
+  aux03 = this
+  tmp59 = 16
+  tmp60 = alloc(tmp59)
+  tmp61 = @List_vtinit
+  tmp62 = call tmp61(tmp60)
+  aux02 = tmp60
+  if0 aux02 goto lbl29
+  goto lbl28
+  lbl29:
+  error("null pointer")
+  lbl28:
+  tmp63 = 0
+  tmp64 = [aux02+0]
+  tmp65 = [tmp64+4]
+  tmp66 = call tmp65(aux02 new_elem aux03 tmp63)
+  ret_val = tmp66
+  return aux02
+
+func List_SetNext(this v_next)
+  [this+8] = v_next
+  tmp67 = 1
+  return tmp67
+
+func List_Delete(this e)
+  my_head = 0
+  ret_val = 0
+  aux05 = 0
+  aux01 = 0
+  prev = 0
+  var_end = 0
+  var_elem = 0
+  aux04 = 0
+  nt = 0
+  my_head = this
+  tmp68 = 0
+  ret_val = tmp68
+  tmp69 = 0
+  tmp70 = 1
+  tmp71 = tmp69 - tmp70
+  aux04 = tmp71
+  aux01 = this
+  prev = this
+  tmp72 = [this+12]
+  var_end = tmp72
+  tmp73 = [this+4]
+  var_elem = tmp73
+  lbl30:
+  tmp75 = 1
+  tmp76 = tmp75 - var_end
+  if0 tmp76 goto lbl32
+  tmp77 = 1
+  tmp78 = tmp77 - ret_val
+  if0 tmp78 goto lbl32
+  tmp74 = 1
+  goto lbl33
+  lbl32:
+  tmp74 = 0
+  lbl33:
+  if0 tmp74 goto lbl31
+  if0 e goto lbl37
+  goto lbl36
+  lbl37:
+  error("null pointer")
+  lbl36:
+  tmp79 = [e+0]
+  tmp80 = [tmp79+16]
+  tmp81 = call tmp80(e var_elem)
+  if0 tmp81 goto lbl34
+  tmp82 = 1
+  ret_val = tmp82
+  tmp83 = 0
+  tmp84 = aux04 < tmp83
+  if0 tmp84 goto lbl38
+  if0 aux01 goto lbl41
+  goto lbl40
+  lbl41:
+  error("null pointer")
+  lbl40:
+  tmp85 = [aux01+0]
+  tmp86 = [tmp85+32]
+  tmp87 = call tmp86(aux01)
+  my_head = tmp87
+  goto lbl39
+  lbl38:
+  tmp88 = 0
+  tmp89 = 555
+  tmp90 = tmp88 - tmp89
+  print(tmp90)
+  if0 prev goto lbl43
+  goto lbl42
+  lbl43:
+  error("null pointer")
+  lbl42:
+  if0 aux01 goto lbl45
+  goto lbl44
+  lbl45:
+  error("null pointer")
+  lbl44:
+  tmp91 = [aux01+0]
+  tmp92 = [tmp91+32]
+  tmp93 = call tmp92(aux01)
+  tmp94 = [prev+0]
+  tmp95 = [tmp94+12]
+  tmp96 = call tmp95(prev tmp93)
+  aux05 = tmp96
+  tmp97 = 0
+  tmp98 = 555
+  tmp99 = tmp97 - tmp98
+  print(tmp99)
+  lbl39:
+  goto lbl35
+  lbl34:
+  tmp100 = 0
+  nt = tmp100
+  lbl35:
+  tmp101 = 1
+  tmp102 = tmp101 - ret_val
+  if0 tmp102 goto lbl46
+  prev = aux01
+  if0 aux01 goto lbl49
+  goto lbl48
+  lbl49:
+  error("null pointer")
+  lbl48:
+  tmp103 = [aux01+0]
+  tmp104 = [tmp103+32]
+  tmp105 = call tmp104(aux01)
+  aux01 = tmp105
+  if0 aux01 goto lbl51
+  goto lbl50
+  lbl51:
+  error("null pointer")
+  lbl50:
+  tmp106 = [aux01+0]
+  tmp107 = [tmp106+24]
+  tmp108 = call tmp107(aux01)
+  var_end = tmp108
+  if0 aux01 goto lbl53
+  goto lbl52
+  lbl53:
+  error("null pointer")
+  lbl52:
+  tmp109 = [aux01+0]
+  tmp110 = [tmp109+28]
+  tmp111 = call tmp110(aux01)
+  var_elem = tmp111
+  tmp112 = 1
+  aux04 = tmp112
+  goto lbl47
+  lbl46:
+  tmp113 = 0
+  nt = tmp113
+  lbl47:
+  goto lbl30
+  lbl31:
+  return my_head
+
+func List_Search(this e)
+  int_ret_val = 0
+  aux01 = 0
+  var_elem = 0
+  var_end = 0
+  nt = 0
+  tmp114 = 0
+  int_ret_val = tmp114
+  aux01 = this
+  tmp115 = [this+12]
+  var_end = tmp115
+  tmp116 = [this+4]
+  var_elem = tmp116
+  lbl54:
+  tmp117 = 1
+  tmp118 = tmp117 - var_end
+  if0 tmp118 goto lbl55
+  if0 e goto lbl59
+  goto lbl58
+  lbl59:
+  error("null pointer")
+  lbl58:
+  tmp119 = [e+0]
+  tmp120 = [tmp119+16]
+  tmp121 = call tmp120(e var_elem)
+  if0 tmp121 goto lbl56
+  tmp122 = 1
+  int_ret_val = tmp122
+  goto lbl57
+  lbl56:
+  tmp123 = 0
+  nt = tmp123
+  lbl57:
+  if0 aux01 goto lbl61
+  goto lbl60
+  lbl61:
+  error("null pointer")
+  lbl60:
+  tmp124 = [aux01+0]
+  tmp125 = [tmp124+32]
+  tmp126 = call tmp125(aux01)
+  aux01 = tmp126
+  if0 aux01 goto lbl63
+  goto lbl62
+  lbl63:
+  error("null pointer")
+  lbl62:
+  tmp127 = [aux01+0]
+  tmp128 = [tmp127+24]
+  tmp129 = call tmp128(aux01)
+  var_end = tmp129
+  if0 aux01 goto lbl65
+  goto lbl64
+  lbl65:
+  error("null pointer")
+  lbl64:
+  tmp130 = [aux01+0]
+  tmp131 = [tmp130+28]
+  tmp132 = call tmp131(aux01)
+  var_elem = tmp132
+  goto lbl54
+  lbl55:
+  return int_ret_val
+
+func List_GetEnd(this)
+  tmp133 = [this+12]
+  return tmp133
+
+func List_GetElem(this)
+  tmp134 = [this+4]
+  return tmp134
+
+func List_GetNext(this)
+  tmp135 = [this+8]
+  return tmp135
+
+func List_Print(this)
+  aux01 = 0
+  var_end = 0
+  var_elem = 0
+  aux01 = this
+  tmp136 = [this+12]
+  var_end = tmp136
+  tmp137 = [this+4]
+  var_elem = tmp137
+  lbl66:
+  tmp138 = 1
+  tmp139 = tmp138 - var_end
+  if0 tmp139 goto lbl67
+  if0 var_elem goto lbl69
+  goto lbl68
+  lbl69:
+  error("null pointer")
+  lbl68:
+  tmp140 = [var_elem+0]
+  tmp141 = [tmp140+4]
+  tmp142 = call tmp141(var_elem)
+  print(tmp142)
+  if0 aux01 goto lbl71
+  goto lbl70
+  lbl71:
+  error("null pointer")
+  lbl70:
+  tmp143 = [aux01+0]
+  tmp144 = [tmp143+32]
+  tmp145 = call tmp144(aux01)
+  aux01 = tmp145
+  if0 aux01 goto lbl73
+  goto lbl72
+  lbl73:
+  error("null pointer")
+  lbl72:
+  tmp146 = [aux01+0]
+  tmp147 = [tmp146+24]
+  tmp148 = call tmp147(aux01)
+  var_end = tmp148
+  if0 aux01 goto lbl75
+  goto lbl74
+  lbl75:
+  error("null pointer")
+  lbl74:
+  tmp149 = [aux01+0]
+  tmp150 = [tmp149+28]
+  tmp151 = call tmp150(aux01)
+  var_elem = tmp151
+  goto lbl66
+  lbl67:
+  tmp152 = 1
+  return tmp152
+
+func LL_Start(this)
+  head = 0
+  last_elem = 0
+  aux01 = 0
+  el01 = 0
+  el02 = 0
+  el03 = 0
+  tmp153 = 16
+  tmp154 = alloc(tmp153)
+  tmp155 = @List_vtinit
+  tmp156 = call tmp155(tmp154)
+  last_elem = tmp154
+  if0 last_elem goto lbl77
+  goto lbl76
+  lbl77:
+  error("null pointer")
+  lbl76:
+  tmp157 = [last_elem+0]
+  tmp158 = [tmp157+0]
+  tmp159 = call tmp158(last_elem)
+  aux01 = tmp159
+  head = last_elem
+  if0 head goto lbl79
+  goto lbl78
+  lbl79:
+  error("null pointer")
+  lbl78:
+  tmp160 = [head+0]
+  tmp161 = [tmp160+0]
+  tmp162 = call tmp161(head)
+  aux01 = tmp162
+  if0 head goto lbl81
+  goto lbl80
+  lbl81:
+  error("null pointer")
+  lbl80:
+  tmp163 = [head+0]
+  tmp164 = [tmp163+36]
+  tmp165 = call tmp164(head)
+  aux01 = tmp165
+  tmp166 = 16
+  tmp167 = alloc(tmp166)
+  tmp168 = @Element_vtinit
+  tmp169 = call tmp168(tmp167)
+  el01 = tmp167
+  if0 el01 goto lbl83
+  goto lbl82
+  lbl83:
+  error("null pointer")
+  lbl82:
+  tmp170 = 25
+  tmp171 = 37000
+  tmp172 = 0
+  tmp173 = [el01+0]
+  tmp174 = [tmp173+0]
+  tmp175 = call tmp174(el01 tmp170 tmp171 tmp172)
+  aux01 = tmp175
+  if0 head goto lbl85
+  goto lbl84
+  lbl85:
+  error("null pointer")
+  lbl84:
+  tmp176 = [head+0]
+  tmp177 = [tmp176+8]
+  tmp178 = call tmp177(head el01)
+  head = tmp178
+  if0 head goto lbl87
+  goto lbl86
+  lbl87:
+  error("null pointer")
+  lbl86:
+  tmp179 = [head+0]
+  tmp180 = [tmp179+36]
+  tmp181 = call tmp180(head)
+  aux01 = tmp181
+  tmp182 = 10000000
+  print(tmp182)
+  tmp183 = 16
+  tmp184 = alloc(tmp183)
+  tmp185 = @Element_vtinit
+  tmp186 = call tmp185(tmp184)
+  el01 = tmp184
+  if0 el01 goto lbl89
+  goto lbl88
+  lbl89:
+  error("null pointer")
+  lbl88:
+  tmp187 = 39
+  tmp188 = 42000
+  tmp189 = 1
+  tmp190 = [el01+0]
+  tmp191 = [tmp190+0]
+  tmp192 = call tmp191(el01 tmp187 tmp188 tmp189)
+  aux01 = tmp192
+  el02 = el01
+  if0 head goto lbl91
+  goto lbl90
+  lbl91:
+  error("null pointer")
+  lbl90:
+  tmp193 = [head+0]
+  tmp194 = [tmp193+8]
+  tmp195 = call tmp194(head el01)
+  head = tmp195
+  if0 head goto lbl93
+  goto lbl92
+  lbl93:
+  error("null pointer")
+  lbl92:
+  tmp196 = [head+0]
+  tmp197 = [tmp196+36]
+  tmp198 = call tmp197(head)
+  aux01 = tmp198
+  tmp199 = 10000000
+  print(tmp199)
+  tmp200 = 16
+  tmp201 = alloc(tmp200)
+  tmp202 = @Element_vtinit
+  tmp203 = call tmp202(tmp201)
+  el01 = tmp201
+  if0 el01 goto lbl95
+  goto lbl94
+  lbl95:
+  error("null pointer")
+  lbl94:
+  tmp204 = 22
+  tmp205 = 34000
+  tmp206 = 0
+  tmp207 = [el01+0]
+  tmp208 = [tmp207+0]
+  tmp209 = call tmp208(el01 tmp204 tmp205 tmp206)
+  aux01 = tmp209
+  if0 head goto lbl97
+  goto lbl96
+  lbl97:
+  error("null pointer")
+  lbl96:
+  tmp210 = [head+0]
+  tmp211 = [tmp210+8]
+  tmp212 = call tmp211(head el01)
+  head = tmp212
+  if0 head goto lbl99
+  goto lbl98
+  lbl99:
+  error("null pointer")
+  lbl98:
+  tmp213 = [head+0]
+  tmp214 = [tmp213+36]
+  tmp215 = call tmp214(head)
+  aux01 = tmp215
+  tmp216 = 16
+  tmp217 = alloc(tmp216)
+  tmp218 = @Element_vtinit
+  tmp219 = call tmp218(tmp217)
+  el03 = tmp217
+  if0 el03 goto lbl101
+  goto lbl100
+  lbl101:
+  error("null pointer")
+  lbl100:
+  tmp220 = 27
+  tmp221 = 34000
+  tmp222 = 0
+  tmp223 = [el03+0]
+  tmp224 = [tmp223+0]
+  tmp225 = call tmp224(el03 tmp220 tmp221 tmp222)
+  aux01 = tmp225
+  if0 head goto lbl103
+  goto lbl102
+  lbl103:
+  error("null pointer")
+  lbl102:
+  tmp226 = [head+0]
+  tmp227 = [tmp226+20]
+  tmp228 = call tmp227(head el02)
+  print(tmp228)
+  if0 head goto lbl105
+  goto lbl104
+  lbl105:
+  error("null pointer")
+  lbl104:
+  tmp229 = [head+0]
+  tmp230 = [tmp229+20]
+  tmp231 = call tmp230(head el03)
+  print(tmp231)
+  tmp232 = 10000000
+  print(tmp232)
+  tmp233 = 16
+  tmp234 = alloc(tmp233)
+  tmp235 = @Element_vtinit
+  tmp236 = call tmp235(tmp234)
+  el01 = tmp234
+  if0 el01 goto lbl107
+  goto lbl106
+  lbl107:
+  error("null pointer")
+  lbl106:
+  tmp237 = 28
+  tmp238 = 35000
+  tmp239 = 0
+  tmp240 = [el01+0]
+  tmp241 = [tmp240+0]
+  tmp242 = call tmp241(el01 tmp237 tmp238 tmp239)
+  aux01 = tmp242
+  if0 head goto lbl109
+  goto lbl108
+  lbl109:
+  error("null pointer")
+  lbl108:
+  tmp243 = [head+0]
+  tmp244 = [tmp243+8]
+  tmp245 = call tmp244(head el01)
+  head = tmp245
+  if0 head goto lbl111
+  goto lbl110
+  lbl111:
+  error("null pointer")
+  lbl110:
+  tmp246 = [head+0]
+  tmp247 = [tmp246+36]
+  tmp248 = call tmp247(head)
+  aux01 = tmp248
+  tmp249 = 2220000
+  print(tmp249)
+  if0 head goto lbl113
+  goto lbl112
+  lbl113:
+  error("null pointer")
+  lbl112:
+  tmp250 = [head+0]
+  tmp251 = [tmp250+16]
+  tmp252 = call tmp251(head el02)
+  head = tmp252
+  if0 head goto lbl115
+  goto lbl114
+  lbl115:
+  error("null pointer")
+  lbl114:
+  tmp253 = [head+0]
+  tmp254 = [tmp253+36]
+  tmp255 = call tmp254(head)
+  aux01 = tmp255
+  tmp256 = 33300000
+  print(tmp256)
+  if0 head goto lbl117
+  goto lbl116
+  lbl117:
+  error("null pointer")
+  lbl116:
+  tmp257 = [head+0]
+  tmp258 = [tmp257+16]
+  tmp259 = call tmp258(head el01)
+  head = tmp259
+  if0 head goto lbl119
+  goto lbl118
+  lbl119:
+  error("null pointer")
+  lbl118:
+  tmp260 = [head+0]
+  tmp261 = [tmp260+36]
+  tmp262 = call tmp261(head)
+  aux01 = tmp262
+  tmp263 = 44440000
+  print(tmp263)
+  tmp264 = 0
+  return tmp264
+
+func Element_vtinit(this)
+  vtsize = 24
+  vt = alloc(vtsize)
+  vfp0 = @Element_Init
+  [vt+0] = vfp0
+  vfp1 = @Element_GetAge
+  [vt+4] = vfp1
+  vfp2 = @Element_GetSalary
+  [vt+8] = vfp2
+  vfp3 = @Element_GetMarried
+  [vt+12] = vfp3
+  vfp4 = @Element_Equal
+  [vt+16] = vfp4
+  vfp5 = @Element_Compare
+  [vt+20] = vfp5
+  [this+0] = vt
+  ret = 0
+  return ret
+
+func List_vtinit(this)
+  vtsize = 40
+  vt = alloc(vtsize)
+  vfp0 = @List_Init
+  [vt+0] = vfp0
+  vfp1 = @List_InitNew
+  [vt+4] = vfp1
+  vfp2 = @List_Insert
+  [vt+8] = vfp2
+  vfp3 = @List_SetNext
+  [vt+12] = vfp3
+  vfp4 = @List_Delete
+  [vt+16] = vfp4
+  vfp5 = @List_Search
+  [vt+20] = vfp5
+  vfp6 = @List_GetEnd
+  [vt+24] = vfp6
+  vfp7 = @List_GetElem
+  [vt+28] = vfp7
+  vfp8 = @List_GetNext
+  [vt+32] = vfp8
+  vfp9 = @List_Print
+  [vt+36] = vfp9
+  [this+0] = vt
+  ret = 0
+  return ret
+
+func LL_vtinit(this)
+  vtsize = 4
+  vt = alloc(vtsize)
+  vfp0 = @LL_Start
+  [vt+0] = vfp0
+  [this+0] = vt
+  ret = 0
+  return ret
+

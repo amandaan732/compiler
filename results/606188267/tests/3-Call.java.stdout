@@ -1,0 +1,32 @@
+func Main()
+  tmp0 = 4
+  tmp1 = alloc(tmp0)
+  tmp2 = @A_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = [tmp1+0]
+  tmp5 = [tmp4+0]
+  tmp6 = call tmp5(tmp1)
+  print(tmp6)
+  tmp7 = 0
+  return tmp7
+
+func A_run(this)
+  tmp8 = 42
+  print(tmp8)
+  tmp9 = 99
+  return tmp9
+
+func A_vtinit(this)
+  vtsize = 4
+  vt = alloc(vtsize)
+  vfp0 = @A_run
+  [vt+0] = vfp0
+  [this+0] = vt
+  ret = 0
+  return ret
+

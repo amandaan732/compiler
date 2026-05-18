@@ -1,1 +1,63 @@
-Program type checked successfully
+func MoreThan4()
+  tmp0 = 4
+  tmp1 = alloc(tmp0)
+  tmp2 = @MT4_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = 1
+  tmp5 = 2
+  tmp6 = 3
+  tmp7 = 4
+  tmp8 = 5
+  tmp9 = 6
+  tmp10 = [tmp1+0]
+  tmp11 = [tmp10+0]
+  tmp12 = call tmp11(tmp1 tmp4 tmp5 tmp6 tmp7 tmp8 tmp9)
+  print(tmp12)
+  tmp13 = 0
+  return tmp13
+
+func MT4_Start(this p1 p2 p3 p4 p5 p6)
+  aux = 0
+  print(p1)
+  print(p2)
+  print(p3)
+  print(p4)
+  print(p5)
+  print(p6)
+  if0 this goto lbl3
+  goto lbl2
+  lbl3:
+  error("null pointer")
+  lbl2:
+  tmp14 = [this+0]
+  tmp15 = [tmp14+4]
+  tmp16 = call tmp15(this p6 p5 p4 p3 p2 p1)
+  aux = tmp16
+  return aux
+
+func MT4_Change(this p1 p2 p3 p4 p5 p6)
+  print(p1)
+  print(p2)
+  print(p3)
+  print(p4)
+  print(p5)
+  print(p6)
+  tmp17 = 0
+  return tmp17
+
+func MT4_vtinit(this)
+  vtsize = 8
+  vt = alloc(vtsize)
+  vfp0 = @MT4_Start
+  [vt+0] = vfp0
+  vfp1 = @MT4_Change
+  [vt+4] = vfp1
+  [this+0] = vt
+  ret = 0
+  return ret
+

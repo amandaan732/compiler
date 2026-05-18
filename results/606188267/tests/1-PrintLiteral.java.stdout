@@ -1,0 +1,6 @@
+func Main()
+  tmp0 = 12
+  print(tmp0)
+  tmp1 = 0
+  return tmp1
+

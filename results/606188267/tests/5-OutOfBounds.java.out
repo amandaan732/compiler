@@ -1,0 +1,11 @@
+0
+Exception in thread "main" java.lang.RuntimeException: "array index out of bounds"
+	at sparrow.visitor.Interpreter.visit(Interpreter.java:297)
+	at sparrow.ErrorMessage.accept(ErrorMessage.java:14)
+	at sparrow.visitor.Interpreter.stepUntilReturn(Interpreter.java:34)
+	at sparrow.visitor.Interpreter.visit(Interpreter.java:367)
+	at sparrow.Call.accept(Call.java:19)
+	at sparrow.visitor.Interpreter.stepUntilReturn(Interpreter.java:34)
+	at sparrow.visitor.Interpreter.visit(Interpreter.java:97)
+	at sparrow.Program.accept(Program.java:15)
+	at Main.main(Main.java:35)

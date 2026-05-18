@@ -1,0 +1,75 @@
+func Main()
+  tmp0 = 4
+  tmp1 = alloc(tmp0)
+  tmp2 = @A_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = [tmp1+0]
+  tmp5 = [tmp4+0]
+  tmp6 = call tmp5(tmp1)
+  print(tmp6)
+  tmp7 = 0
+  return tmp7
+
+func A_run(this)
+  a = 0
+  tmp8 = 20
+  tmp9 = 1
+  tmp10 = tmp8 + tmp9
+  tmp11 = 4
+  tmp12 = tmp10 * tmp11
+  tmp13 = alloc(tmp12)
+  [tmp13+0] = tmp8
+  a = tmp13
+  tmp14 = 10
+  tmp20 = [a+0]
+  tmp21 = 0
+  tmp22 = tmp14 < tmp21
+  if0 tmp22 goto lbl2
+  error("array index out of bounds")
+  lbl2:
+  tmp23 = tmp14 < tmp20
+  if0 tmp23 goto lbl4
+  goto lbl3
+  lbl4:
+  error("array index out of bounds")
+  lbl3:
+  tmp15 = 4
+  tmp16 = tmp14 * tmp15
+  tmp17 = tmp16 + tmp15
+  tmp18 = a + tmp17
+  tmp19 = [tmp18+0]
+  print(tmp19)
+  tmp24 = 40
+  tmp30 = [a+0]
+  tmp31 = 0
+  tmp32 = tmp24 < tmp31
+  if0 tmp32 goto lbl5
+  error("array index out of bounds")
+  lbl5:
+  tmp33 = tmp24 < tmp30
+  if0 tmp33 goto lbl7
+  goto lbl6
+  lbl7:
+  error("array index out of bounds")
+  lbl6:
+  tmp25 = 4
+  tmp26 = tmp24 * tmp25
+  tmp27 = tmp26 + tmp25
+  tmp28 = a + tmp27
+  tmp29 = [tmp28+0]
+  return tmp29
+
+func A_vtinit(this)
+  vtsize = 4
+  vt = alloc(vtsize)
+  vfp0 = @A_run
+  [vt+0] = vfp0
+  [this+0] = vt
+  ret = 0
+  return ret
+

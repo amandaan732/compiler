@@ -1,0 +1,63 @@
+func Main()
+  tmp0 = 4
+  tmp1 = alloc(tmp0)
+  tmp2 = @A_vtinit
+  tmp3 = call tmp2(tmp1)
+  if0 tmp1 goto lbl1
+  goto lbl0
+  lbl1:
+  error("null pointer")
+  lbl0:
+  tmp4 = [tmp1+0]
+  tmp5 = [tmp4+0]
+  tmp6 = call tmp5(tmp1)
+  print(tmp6)
+  tmp7 = 0
+  return tmp7
+
+func A_run(this)
+  a = 0
+  b = 0
+  if0 this goto lbl3
+  goto lbl2
+  lbl3:
+  error("null pointer")
+  lbl2:
+  tmp8 = 12
+  tmp9 = [this+0]
+  tmp10 = [tmp9+4]
+  tmp11 = call tmp10(this tmp8)
+  a = tmp11
+  if0 this goto lbl5
+  goto lbl4
+  lbl5:
+  error("null pointer")
+  lbl4:
+  tmp12 = 15
+  tmp13 = [this+0]
+  tmp14 = [tmp13+4]
+  tmp15 = call tmp14(this tmp12)
+  b = tmp15
+  tmp16 = a + b
+  return tmp16
+
+func A_helper(this param)
+  x = 0
+  x = param
+  tmp17 = 1
+  tmp18 = param + tmp17
+  param = tmp18
+  print(x)
+  return x
+
+func A_vtinit(this)
+  vtsize = 8
+  vt = alloc(vtsize)
+  vfp0 = @A_run
+  [vt+0] = vfp0
+  vfp1 = @A_helper
+  [vt+4] = vfp1
+  [this+0] = vt
+  ret = 0
+  return ret
+
