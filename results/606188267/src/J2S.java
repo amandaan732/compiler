@@ -13,6 +13,16 @@ public class J2S {
     static Map<String, Map<String, Integer>> coffsets = new LinkedHashMap<>();
     static String lastType = null;
 
+    static final Set<String> RESERVED = new HashSet<>(Arrays.asList(
+        "a2","a3","a4","a5","a6","a7",
+        "s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11",
+        "t0","t1","t2","t3","t4","t5"
+    ));
+
+    static String safeName(String name) {
+        return RESERVED.contains(name) ? "p_" + name : name;
+    }
+
     static boolean isSub(String t1, String t2) {
         if (t1==null || t2==null) {
             return false;
@@ -317,9 +327,17 @@ public class J2S {
 
             Map<String, Integer> offsets = new LinkedHashMap<>();
             int offset = 4;
-            for (String fname: makeFLDMap(cls).keySet()) {
-                offsets.put(fname,offset);
-                offset += 4;
+            List<String> chain = new ArrayList<>();
+            String cur2 = cls;
+            while (cur2 != null && !cur2.equals(mainCN)) {
+                chain.add(0, cur2);
+                cur2 = clparent.get(cur2);
+            }
+            for (String c : chain) {
+                for (String fname : cflds.get(c).keySet()) {
+                    offsets.put(c + "_" + fname, offset);
+                    offset += 4;
+                }
             }
             coffsets.put(cls,offsets);
         }
@@ -475,9 +493,13 @@ public class J2S {
             ctx.locals.add("this");
             ctx.localTypes.put("this", ctx.cls);
             for (String p : info.paramNames) {
-                ctx.sb.append(" ").append(p);
-                ctx.locals.add(p);
-                ctx.localTypes.put(p, info.paramTypes.get(info.paramNames.indexOf(p)));
+                String sp = safeName(p);
+                ctx.sb.append(" ").append(sp);
+                ctx.locals.add(sp);
+                ctx.localTypes.put(sp, info.paramTypes.get(info.paramNames.indexOf(p)));
+                if (!sp.equals(p)) {
+                    ctx.localTypes.put(p, info.paramTypes.get(info.paramNames.indexOf(p)));
+                }
             }
             ctx.sb.append(")\n");
 
@@ -519,17 +541,20 @@ public class J2S {
         @Override
         public String visit(Identifier n, CgCtx ctx) {
             String name = n.f0.tokenImage;
-            if (ctx.locals.contains(name)) { //then ==local var/param
-                lastType = ctx.localTypes.get(name);
-                return name;
+            String safeName = safeName(name);
+            if (ctx.locals.contains(safeName)) { //then ==local var/param
+                lastType = ctx.localTypes.get(safeName);
+                return safeName;
             }
 
-            //else == field of 'this' 
-                //emit heap load
-            int offset = coffsets.get(ctx.cls).get(name);
+            String dc = ctx.cls;
+            while (dc != null && !(cflds.containsKey(dc) && cflds.get(dc).containsKey(name))) {
+                dc = clparent.get(dc);
+            }
+            int offset = coffsets.get(ctx.cls).get(dc + "_" + name);
             String t = ctx.newTemp();
             ctx.emit(t + " = [this+" + offset + "]");
-            lastType = makeFLDMap(ctx.cls).get(name); 
+            lastType = cflds.get(dc).get(name);
 
             return t;
         }
@@ -548,7 +573,8 @@ public class J2S {
         @Override
         public String visit(AllocationExpression n, CgCtx ctx) {
             String cls = n.f1.f0.tokenImage;
-            int numFields = makeFLDMap(cls).size();
+            // int numFields = makeFLDMap(cls).size();
+            int numFields = coffsets.get(cls).size();
             int bytes = (numFields + 1) * 4; // +1 for vtable ptr
 
             String tsize = ctx.newTemp();
@@ -649,7 +675,11 @@ public class J2S {
                 ctx.emit(varName + " = " + rhs);
             } 
             else { //fld assingment
-                int offset = coffsets.get(ctx.cls).get(varName);
+                String dc = ctx.cls;
+                while (dc != null && !(cflds.containsKey(dc) && cflds.get(dc).containsKey(varName))) {
+                    dc = clparent.get(dc);
+                }
+                int offset = coffsets.get(ctx.cls).get(dc + "_" + varName);
                 ctx.emit("[this+" + offset + "] = " + rhs);
             }
 
@@ -836,7 +866,12 @@ public class J2S {
                 arr = arrName;
             } 
             else {
-                int offset = coffsets.get(ctx.cls).get(arrName);
+                // int offset = coffsets.get(ctx.cls).get(arrName);
+                String dc = ctx.cls;
+                while (dc != null && !(cflds.containsKey(dc) && cflds.get(dc).containsKey(arrName))) {
+                    dc = clparent.get(dc);
+                }
+                int offset = coffsets.get(ctx.cls).get(dc + "_" + arrName);
                 arr = ctx.newTemp();
                 ctx.emit(arr + " = [this+" + offset + "]");
             }
