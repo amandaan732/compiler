@@ -1,0 +1,60 @@
+func Main()
+  t0 = 8
+  t0 = alloc(t0)
+  _fr_Main = t0
+  [t0+0] = s2
+  [t0+4] = s1
+  s2 = 4
+  t3 = alloc(s2)
+  t2 = alloc(s2)
+  s2 = @FacComputeFac
+  [t2+0] = s2
+  s2 = t2
+  [t3+0] = s2
+  if0 t3 goto null1
+  t2 = [t3+0]
+  t2 = [t2+0]
+  s2 = 6
+  _a0x0 = t3
+  _a0x1 = s2
+  s1 = call t2(_a0x0 _a0x1)
+  print(s1)
+  goto main_end
+  null1:
+  error("null pointer")
+  main_end:
+  v0 = s2
+  t0 = _fr_Main
+  s2 = [t0+0]
+  s1 = [t0+4]
+  return v0
+
+func FacComputeFac(this num)
+  t0 = 8
+  t0 = alloc(t0)
+  _fr_FacComputeFac = t0
+  [t0+0] = s2
+  [t0+4] = s1
+  t3 = this
+  s2 = num
+  t2 = 1
+  t2 = s2 < t2
+  if0 t2 goto if1_else
+  t2 = 1
+  goto if1_end
+  if1_else:
+  t4 = [t3+0]
+  t4 = [t4+0]
+  t2 = 1
+  t2 = s2 - t2
+  _a1x0 = t3
+  _a1x1 = t2
+  s1 = call t4(_a1x0 _a1x1)
+  t2 = s2 * s1
+  if1_end:
+  t0 = _fr_FacComputeFac
+  s2 = [t0+0]
+  s1 = [t0+4]
+  num_aux = t2
+  return num_aux
+

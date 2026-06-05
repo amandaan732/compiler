@@ -1,0 +1,128 @@
+  .equiv @print_int, 1
+  .equiv @print_char, 11
+  .equiv @exit, 10
+  .equiv @sbrk, 9
+
+.data
+_nl: .asciiz "\n"
+
+.text
+  jal Main
+  li a0, @exit
+  ecall
+
+alloc:
+  mv a1, a0
+  li a0, @sbrk
+  ecall
+  jr ra
+
+Main:
+  addi sp, sp, -48
+  sw ra, 44(sp)
+  sw s0, 40(sp)
+  addi s0, sp, 48
+  li t0, 4
+  sw t0, -12(s0)
+  sw v0, -16(s0)
+  mv a0, t1
+  jal alloc
+  mv t0, a0
+  sw t0, -20(s0)
+  sw v0, -16(s0)
+  mv a0, t1
+  jal alloc
+  mv t0, a0
+  sw t0, -24(s0)
+  la t0, FacComputeFac
+  sw t0, -12(s0)
+  sw vmt_Fac, -28(s0)
+  sw v0, -16(s0)
+  sw t1, 0(t0)
+  sw vmt_Fac, -28(s0)
+  sw t0, -12(s0)
+  sw w0, -28(s0)
+  sw v0, -16(s0)
+  sw t1, 0(t0)
+  sw w0, -28(s0)
+  beqz t0, null1
+  sw w0, -16(s0)
+  lw t0, 0(t1)
+  sw t0, -32(s0)
+  sw w1, -16(s0)
+  lw t0, 0(t1)
+  sw t0, -32(s0)
+  li t0, 6
+  sw t0, -12(s0)
+  sw w1, -16(s0)
+  lw a0, -20(s0)
+  lw a1, -12(s0)
+  jalr t1
+  sw a0, -28(s0)
+  sw t0, -36(s0)
+  sw w2, -28(s0)
+  mv a1, t0
+  li a0, @print_int
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  j main_end
+null1:
+  li a0, @exit
+  ecall
+main_end:
+  lw a0, -12(s0)
+  lw ra, 44(sp)
+  lw s0, 40(sp)
+  addi sp, sp, 48
+  jr ra
+
+FacComputeFac:
+  addi sp, sp, -64
+  sw ra, 60(sp)
+  sw s0, 56(sp)
+  addi s0, sp, 64
+  sw a0, -12(s0)
+  sw a1, -16(s0)
+  li t0, 1
+  sw t0, -20(s0)
+  sw num, -24(s0)
+  sw v0, -28(s0)
+  slt t0, t1, t2
+  sw t0, -32(s0)
+  sw w0, -36(s0)
+  beqz t0, if1_else
+  li t0, 1
+  sw t0, -40(s0)
+  j if1_end
+if1_else:
+  sw this, -24(s0)
+  lw t0, 0(t1)
+  sw t0, -44(s0)
+  sw w1, -24(s0)
+  lw t0, 0(t1)
+  sw t0, -44(s0)
+  li t0, 1
+  sw t0, -20(s0)
+  sw num, -24(s0)
+  sw v0, -28(s0)
+  sub t0, t1, t2
+  sw t0, -48(s0)
+  sw w1, -24(s0)
+  lw a0, -12(s0)
+  lw a1, -48(s0)
+  jalr t1
+  sw a0, -36(s0)
+  sw t0, -52(s0)
+  sw num, -24(s0)
+  sw w3, -28(s0)
+  mul t0, t1, t2
+  sw t0, -40(s0)
+if1_end:
+  lw a0, -40(s0)
+  lw ra, 60(sp)
+  lw s0, 56(sp)
+  addi sp, sp, 64
+  jr ra
+

@@ -1,0 +1,421 @@
+  .equiv @print_int, 1
+  .equiv @print_char, 11
+  .equiv @exit, 10
+  .equiv @sbrk, 9
+
+.data
+_nl: .asciiz "\n"
+
+.text
+  jal Main
+  li a0, @exit
+  ecall
+
+alloc:
+  mv a1, a0
+  li a0, @sbrk
+  ecall
+  jr ra
+
+Main:
+  addi sp, sp, -32
+  sw ra, 28(sp)
+  sw s0, 24(sp)
+  addi s0, sp, 32
+  la t0, f
+  sw t0, -12(s0)
+  sw v0, -16(s0)
+  jalr t1
+  sw a0, -20(s0)
+  sw t0, -24(s0)
+  sw v1, -16(s0)
+  mv a1, t1
+  li a0, @print_int
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  lw a0, -24(s0)
+  lw ra, 28(sp)
+  lw s0, 24(sp)
+  addi sp, sp, 32
+  jr ra
+
+f:
+  addi sp, sp, -176
+  sw ra, 172(sp)
+  sw s0, 168(sp)
+  addi s0, sp, 176
+  li t0, 10
+  sw t0, -12(s0)
+  li t0, 20
+  sw t0, -16(s0)
+  sw a, -20(s0)
+  sw b, -24(s0)
+  add t0, t1, t2
+  sw t0, -28(s0)
+  li t0, 30
+  sw t0, -32(s0)
+  sw a, -20(s0)
+  sw x, -24(s0)
+  slt t0, t1, t2
+  sw t0, -36(s0)
+  sw y, -20(s0)
+  beqz t1, L8
+  sw a, -20(s0)
+  sw c, -24(s0)
+  add t0, t1, t2
+  sw t0, -40(s0)
+  sw a, -20(s0)
+  sw b, -24(s0)
+  add t0, t1, t2
+  sw t0, -44(s0)
+  j L10
+L8:
+  sw b, -20(s0)
+  sw c, -24(s0)
+  add t0, t1, t2
+  sw t0, -48(s0)
+  j L14
+L10:
+  li t0, 50
+  sw t0, -52(s0)
+  sw d, -20(s0)
+  sw fifty, -24(s0)
+  add t0, t1, t2
+  sw t0, -16(s0)
+  sw c, -20(s0)
+  sw d, -24(s0)
+  add t0, t1, t2
+  sw t0, -56(s0)
+  sw s, -20(s0)
+  sw f, -24(s0)
+  add t0, t1, t2
+  sw t0, -60(s0)
+  sw t, -20(s0)
+  mv a1, t1
+  li a0, @print_int
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  sw c, -20(s0)
+  sw f, -24(s0)
+  add t0, t1, t2
+  sw t0, -48(s0)
+  li t0, 40
+  sw t0, -64(s0)
+  sw b, -20(s0)
+  sw forty, -24(s0)
+  add t0, t1, t2
+  sw t0, -16(s0)
+  j L8
+L14:
+  li t0, 10
+  sw t0, -68(s0)
+  sw a, -20(s0)
+  sw ten, -24(s0)
+  add t0, t1, t2
+  sw t0, -44(s0)
+L22:
+  li t0, 55
+  sw t0, -16(s0)
+  li t0, 20
+  sw t0, -72(s0)
+  sw a, -20(s0)
+  sw twenty, -24(s0)
+  sub t0, t1, t2
+  sw t0, -28(s0)
+  sw b, -20(s0)
+  sw c, -24(s0)
+  slt t0, t1, t2
+  sw t0, -76(s0)
+  sw z, -20(s0)
+  beqz t1, L20
+  sw c, -20(s0)
+  sw b, -24(s0)
+  add t0, t1, t2
+  sw t0, -40(s0)
+  sw d, -20(s0)
+  sw ten, -24(s0)
+  sub t0, t1, t2
+  sw t0, -48(s0)
+  sw d, -20(s0)
+  sw e, -24(s0)
+  add t0, t1, t2
+  sw t0, -80(s0)
+  sw w, -20(s0)
+  mv a1, t1
+  li a0, @print_int
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  sw c, -20(s0)
+  sw e, -24(s0)
+  add t0, t1, t2
+  sw t0, -16(s0)
+  li t0, 2
+  sw t0, -84(s0)
+  sw two, -20(s0)
+  sw b, -24(s0)
+  sub t0, t1, t2
+  sw t0, -44(s0)
+  j L22
+L20:
+  li t0, 7
+  sw t0, -88(s0)
+  sw f, -20(s0)
+  sw seven, -24(s0)
+  add t0, t1, t2
+  sw t0, -16(s0)
+  sw c, -20(s0)
+  sw b, -24(s0)
+  add t0, t1, t2
+  sw t0, -28(s0)
+  li t0, 2
+  sw t0, -84(s0)
+  sw two, -20(s0)
+  sw c, -24(s0)
+  mul t0, t1, t2
+  sw t0, -48(s0)
+  sw f, -20(s0)
+  sw ten, -24(s0)
+  add t0, t1, t2
+  sw t0, -92(s0)
+  li t0, 55
+  sw t0, -96(s0)
+  sw fiftyfive, -20(s0)
+  sw t1, -100(s0)
+  la t0, g
+  sw t0, -104(s0)
+  sw g, -20(s0)
+  sw h, -24(s0)
+  slt t0, t1, t2
+  sw t0, -32(s0)
+  sw x, -20(s0)
+  beqz t1, L27
+  sw g, -20(s0)
+  sw twenty, -24(s0)
+  sub t0, t1, t2
+  sw t0, -108(s0)
+  sw v2, -20(s0)
+  lw a0, -16(s0)
+  lw a1, -28(s0)
+  lw a2, -40(s0)
+  lw a3, -48(s0)
+  lw a4, -44(s0)
+  lw a5, -92(s0)
+  lw a6, -100(s0)
+  lw a7, -108(s0)
+  jalr t1
+  sw a0, -112(s0)
+  sw t0, -100(s0)
+  sw i, -20(s0)
+  sw h, -24(s0)
+  add t0, t1, t2
+  sw t0, -116(s0)
+  j L29
+L27:
+  li t0, 1
+  sw t0, -120(s0)
+  sw g, -20(s0)
+  sw one, -24(s0)
+  add t0, t1, t2
+  sw t0, -124(s0)
+  sw two, -20(s0)
+  sw k, -24(s0)
+  mul t0, t1, t2
+  sw t0, -116(s0)
+L29:
+  li t0, 5
+  sw t0, -128(s0)
+  sw j, -20(s0)
+  sw five, -24(s0)
+  sub t0, t1, t2
+  sw t0, -132(s0)
+  sw g, -20(s0)
+  sw l, -24(s0)
+  add t0, t1, t2
+  sw t0, -124(s0)
+  sw j, -20(s0)
+  sw k, -24(s0)
+  sub t0, t1, t2
+  sw t0, -136(s0)
+  sw q, -20(s0)
+  sw l, -24(s0)
+  add t0, t1, t2
+  sw t0, -140(s0)
+  sw r, -20(s0)
+  mv a1, t1
+  li a0, @print_int
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  sw j, -20(s0)
+  sw k, -24(s0)
+  add t0, t1, t2
+  sw t0, -108(s0)
+  sw c, -20(s0)
+  sw d, -24(s0)
+  add t0, t1, t2
+  sw t0, -28(s0)
+  sw d, -20(s0)
+  sw twenty, -24(s0)
+  add t0, t1, t2
+  sw t0, -144(s0)
+  sw i, -20(s0)
+  sw m, -24(s0)
+  add t0, t1, t2
+  sw t0, -148(s0)
+  sw d, -20(s0)
+  sw n, -24(s0)
+  slt t0, t1, t2
+  sw t0, -56(s0)
+L3:
+  sw s, -20(s0)
+  beqz t1, L12
+  sw d, -20(s0)
+  sw m, -24(s0)
+  add t0, t1, t2
+  sw t0, -152(s0)
+  li t0, 30
+  sw t0, -156(s0)
+  sw o, -20(s0)
+  sw thirty, -24(s0)
+  add t0, t1, t2
+  sw t0, -160(s0)
+  sw i, -20(s0)
+  sw p, -24(s0)
+  sub t0, t1, t2
+  sw t0, -160(s0)
+  sw o, -20(s0)
+  sw p, -24(s0)
+  sub t0, t1, t2
+  sw t0, -148(s0)
+  li t0, 0
+  sw t0, -164(s0)
+  sw n, -20(s0)
+  sw zero, -24(s0)
+  mul t0, t1, t2
+  sw t0, -56(s0)
+  sw c, -20(s0)
+  sw g, -24(s0)
+  add t0, t1, t2
+  sw t0, -144(s0)
+  sw o, -20(s0)
+  sw n, -24(s0)
+  add t0, t1, t2
+  sw t0, -148(s0)
+  sw m, -20(s0)
+  sw n, -24(s0)
+  sub t0, t1, t2
+  sw t0, -168(s0)
+  sw u, -20(s0)
+  mv a1, t1
+  li a0, @print_int
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  j L3
+L12:
+  sw k, -20(s0)
+  sw n, -24(s0)
+  sub t0, t1, t2
+  sw t0, -92(s0)
+  sw o, -20(s0)
+  sw g, -24(s0)
+  add t0, t1, t2
+  sw t0, -92(s0)
+  lw a0, -92(s0)
+  lw ra, 172(sp)
+  lw s0, 168(sp)
+  addi sp, sp, 176
+  jr ra
+
+g:
+  addi sp, sp, -112
+  sw ra, 108(sp)
+  sw s0, 104(sp)
+  addi s0, sp, 112
+  sw a0, -12(s0)
+  sw a1, -16(s0)
+  sw a2, -20(s0)
+  sw a3, -24(s0)
+  sw a4, -28(s0)
+  sw a5, -32(s0)
+  sw a6, -36(s0)
+  sw a7, -40(s0)
+  sw x1, -44(s0)
+  sw x2, -48(s0)
+  add t0, t1, t2
+  sw t0, -52(s0)
+  sw x3, -44(s0)
+  sw x4, -48(s0)
+  add t0, t1, t2
+  sw t0, -56(s0)
+  sw x5, -44(s0)
+  sw x6, -48(s0)
+  add t0, t1, t2
+  sw t0, -60(s0)
+  sw x7, -44(s0)
+  sw x8, -48(s0)
+  add t0, t1, t2
+  sw t0, -64(s0)
+  li t0, 10
+  sw t0, -68(s0)
+  sw ten, -44(s0)
+  sw t1, -72(s0)
+  sw x8, -44(s0)
+  sw x1, -48(s0)
+  slt t0, t1, t2
+  sw t0, -76(s0)
+  sw v3, -44(s0)
+  beqz t1, L42
+  la t0, g
+  sw t0, -80(s0)
+  sw v4, -44(s0)
+  lw a0, -76(s0)
+  lw a1, -36(s0)
+  lw a2, -76(s0)
+  lw a3, -28(s0)
+  lw a4, -68(s0)
+  lw a5, -76(s0)
+  lw a6, -16(s0)
+  lw a7, -68(s0)
+  jalr t1
+  sw a0, -84(s0)
+  sw t0, -52(s0)
+L42:
+  sw d, -44(s0)
+  sw a, -48(s0)
+  sub t0, t1, t2
+  sw t0, -72(s0)
+  sw b, -44(s0)
+  sw e, -48(s0)
+  mul t0, t1, t2
+  sw t0, -88(s0)
+  sw c, -44(s0)
+  sw f, -48(s0)
+  sub t0, t1, t2
+  sw t0, -92(s0)
+  sw d, -44(s0)
+  sw e, -48(s0)
+  add t0, t1, t2
+  sw t0, -96(s0)
+  sw e, -44(s0)
+  sw f, -48(s0)
+  add t0, t1, t2
+  sw t0, -100(s0)
+  sw g, -44(s0)
+  sw h, -48(s0)
+  add t0, t1, t2
+  sw t0, -104(s0)
+  lw a0, -104(s0)
+  lw ra, 108(sp)
+  lw s0, 104(sp)
+  addi sp, sp, 112
+  jr ra
+

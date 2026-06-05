@@ -1,0 +1,93 @@
+func Main()
+  t0 = 4
+  t0 = alloc(t0)
+  _fr_Main = t0
+  [t0+0] = s1
+  t2 = @ManyLive_test
+  s1 = call t2()
+  print(s1)
+  t2 = 0
+  t0 = _fr_Main
+  s1 = [t0+0]
+  v1 = t2
+  return v1
+
+func ManyLive_test()
+  t0 = 44
+  t0 = alloc(t0)
+  _fr_ManyLive_test = t0
+  [t0+0] = s8
+  [t0+4] = s9
+  [t0+8] = s1
+  [t0+12] = s7
+  [t0+16] = s5
+  [t0+20] = s6
+  [t0+24] = s3
+  [t0+28] = s2
+  [t0+32] = s11
+  [t0+36] = s10
+  [t0+40] = s4
+  t4 = 1
+  t3 = 2
+  t0 = 3
+  a2 = t0
+  t0 = 4
+  a3 = t0
+  t0 = 5
+  a4 = t0
+  s3 = 6
+  t0 = 7
+  a6 = t0
+  s11 = 8
+  s10 = 9
+  s2 = 10
+  s9 = 11
+  s8 = 12
+  s7 = 13
+  s1 = 14
+  s6 = 15
+  s5 = 16
+  t2 = @helper
+  _a1x0 = t4
+  _a1x1 = t3
+  s4 = call t2(_a1x0 _a1x1)
+  t0 = 3
+  t1 = 4
+  t5 = t0 + t1
+  t0 = 5
+  s3 = t0 + s3
+  t0 = 7
+  t3 = t0 + s11
+  s2 = s10 + s2
+  t4 = s9 + s8
+  s1 = s7 + s1
+  t2 = s6 + s5
+  t5 = s4 + t5
+  t3 = s3 + t3
+  t4 = s2 + t4
+  t2 = s1 + t2
+  t3 = t5 + t3
+  t2 = t4 + t2
+  t2 = t3 + t2
+  t0 = _fr_ManyLive_test
+  s8 = [t0+0]
+  s9 = [t0+4]
+  s1 = [t0+8]
+  s7 = [t0+12]
+  s5 = [t0+16]
+  s6 = [t0+20]
+  s3 = [t0+24]
+  s2 = [t0+28]
+  s11 = [t0+32]
+  s10 = [t0+36]
+  s4 = [t0+40]
+  b14 = t2
+  return b14
+
+func helper(x y)
+  t3 = x
+  t2 = y
+  t2 = t3 + t2
+  z = t2
+  return z
+
