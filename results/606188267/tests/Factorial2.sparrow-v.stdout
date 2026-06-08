@@ -1,123 +1,161 @@
-  .equiv @print_int, 1
-  .equiv @print_char, 11
-  .equiv @exit, 10
-  .equiv @sbrk, 9
-
-.data
-_nl: .asciiz "\n"
-
+.equiv @sbrk, 9
+.equiv @print_string, 4
+.equiv @print_char, 11
+.equiv @print_int, 1
+.equiv @exit, 10
+.equiv @exit2, 17
 .text
+.globl main
+main:
   jal Main
   li a0, @exit
   ecall
-
-alloc:
+.globl print
+print:
   mv a1, a0
-  li a0, @sbrk
-  ecall
-  jr ra
-
-Main:
-  addi sp, sp, -48
-  sw ra, 44(sp)
-  sw s0, 40(sp)
-  addi s0, sp, 48
-  li t0, 4
-  sw t0, -12(s0)
-  sw v0, -16(s0)
-  mv a0, t1
-  jal alloc
-  mv t0, a0
-  sw t0, -20(s0)
-  sw v0, -16(s0)
-  mv a0, t1
-  jal alloc
-  mv t3, a0
-  la t0, FacComputeFac
-  sw t0, -12(s0)
-  sw v0, -16(s0)
-  sw t1, 0(t3)
-  sw t3, -12(s0)
-  sw w0, -24(s0)
-  sw v0, -16(s0)
-  sw t1, 0(t0)
-  sw w0, -16(s0)
-  beqz t1, null1
-  sw w0, -16(s0)
-  lw t4, 0(t1)
-  lw t4, 0(t4)
-  li t0, 6
-  sw t0, -12(s0)
-  sw t3, -28(s0)
-  sw t4, -32(s0)
-  sw t5, -36(s0)
-  lw a0, -20(s0)
-  lw a1, -12(s0)
-  jalr t4
-  sw a0, -24(s0)
-  sw stack_save_t4, -40(s0)
-  sw stack_save_t5, -44(s0)
-  sw stack_save_t3, -48(s0)
-  sw t0, -44(s0)
-  mv a1, t5
   li a0, @print_int
   ecall
   li a1, 10
   li a0, @print_char
   ecall
-  j main_end
-null1:
+  jr ra
+.globl error
+error:
+  mv a1, a0
+  li a0, @print_string
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
   li a0, @exit
   ecall
-main_end:
-  lw a0, -12(s0)
-  lw ra, 44(sp)
-  lw s0, 40(sp)
-  addi sp, sp, 48
+abort_17:
+  j abort_17
+.globl alloc
+alloc:
+  mv a1, a0
+  li a0, @sbrk
+  ecall
+  jr ra
+.data
+.globl msg_nullptr
+msg_nullptr:
+  .asciiz "null pointer"
+  .align 2
+.globl msg_array_oob
+msg_array_oob:
+  .asciiz "array index out of bounds"
+  .align 2
+.text
+.globl Main
+Main:
+  sw fp, -8(sp)
+  mv fp, sp
+  li t0, 32
+  sub sp, sp, t0
+  sw ra, -4(fp)
+  li t0, 4
+  sw t0, -12(fp)
+  lw t1, -12(fp)
+  mv a0, t1
+  jal alloc
+  mv t0, a0
+  sw t0, -16(fp)
+  lw t1, -12(fp)
+  mv a0, t1
+  jal alloc
+  mv t3, a0
+  la t0, FacComputeFac
+  sw t0, -12(fp)
+  lw t1, -12(fp)
+  sw t1, 0(t3)
+  sw t3, -12(fp)
+  lw t0, -16(fp)
+  lw t1, -12(fp)
+  sw t1, 0(t0)
+  lw t1, -16(fp)
+  bnez t1, Main_br0
+  j Main_null1
+Main_br0:
+  lw t1, -16(fp)
+  lw t4, 0(t1)
+  lw t4, 0(t4)
+  li t0, 6
+  sw t0, -12(fp)
+  sw t3, -20(fp)
+  sw t4, -24(fp)
+  sw t5, -28(fp)
+  lw a0, -16(fp)
+  lw a1, -12(fp)
+  jalr t4
+  mv t0, a0
+  sw a0, -32(fp)
+  lw t4, -24(fp)
+  lw t5, -28(fp)
+  lw t3, -20(fp)
+  mv t5, t0
+  mv a0, t5
+  jal print
+  j Main_main_end
+Main_null1:
+  la a0, msg_nullptr
+  jal error
+Main_main_end:
+  lw a0, -12(fp)
+  lw ra, -4(fp)
+  lw fp, -8(fp)
+  li t0, 32
+  add sp, sp, t0
   jr ra
 
+.globl FacComputeFac
 FacComputeFac:
-  addi sp, sp, -64
-  sw ra, 60(sp)
-  sw s0, 56(sp)
-  addi s0, sp, 64
-  sw a0, -12(s0)
-  sw a1, -16(s0)
-  sw s1, -20(s0)
+  sw fp, -8(sp)
+  mv fp, sp
+  li t0, 48
+  sub sp, sp, t0
+  sw ra, -4(fp)
+  sw a0, -12(fp)
+  sw a1, -16(fp)
+  sw s1, -20(fp)
   li t3, 1
-  sw num, -24(s0)
+  lw t1, -16(fp)
   slt t4, t1, t3
-  beqz t4, if1_else
+  bnez t4, FacComputeFac_br1
+  j FacComputeFac_if1_else
+FacComputeFac_br1:
   li t0, 1
-  sw t0, -28(s0)
-  j if1_end
-if1_else:
-  sw this, -24(s0)
+  sw t0, -24(fp)
+  j FacComputeFac_if1_end
+FacComputeFac_if1_else:
+  lw t1, -12(fp)
   lw t5, 0(t1)
   lw t5, 0(t5)
   li t3, 1
-  sw num, -24(s0)
+  lw t1, -16(fp)
   sub t0, t1, t3
-  sw t0, -32(s0)
-  sw t3, -36(s0)
-  sw t4, -40(s0)
-  sw t5, -44(s0)
-  lw a0, -12(s0)
-  lw a1, -32(s0)
+  sw t0, -28(fp)
+  sw t3, -32(fp)
+  sw t4, -36(fp)
+  sw t5, -40(fp)
+  lw a0, -12(fp)
+  lw a1, -28(fp)
   jalr t5
-  sw a0, -48(s0)
-  sw stack_save_t4, -52(s0)
-  sw stack_save_t5, -56(s0)
-  sw stack_save_t3, -60(s0)
-  sw t0, -64(s0)
-  sw num, -24(s0)
+  mv t0, a0
+  sw a0, -44(fp)
+  lw t4, -36(fp)
+  lw t5, -40(fp)
+  lw t3, -32(fp)
+  mv s1, t0
+  lw t1, -16(fp)
   mul t0, t1, s1
-  sw t0, -28(s0)
-if1_end:
-  sw stack_save_s1, -64(s0)
-  lw a0, -28(s0)
-  lw ra, 60(sp)
-  lw s0, 56(sp)
-  addi sp, sp, 64
+  sw t0, -24(fp)
+FacComputeFac_if1_end:
+  lw s1, -20(fp)
+  lw a0, -24(fp)
+  lw ra, -4(fp)
+  lw fp, -8(fp)
+  li t0, 48
+  add sp, sp, t0
   jr ra
 

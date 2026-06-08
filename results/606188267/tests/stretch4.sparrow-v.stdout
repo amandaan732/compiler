@@ -1,412 +1,444 @@
-  .equiv @print_int, 1
-  .equiv @print_char, 11
-  .equiv @exit, 10
-  .equiv @sbrk, 9
-
-.data
-_nl: .asciiz "\n"
-
+.equiv @sbrk, 9
+.equiv @print_string, 4
+.equiv @print_char, 11
+.equiv @print_int, 1
+.equiv @exit, 10
+.equiv @exit2, 17
 .text
+.globl main
+main:
   jal Main
   li a0, @exit
   ecall
-
+.globl print
+print:
+  mv a1, a0
+  li a0, @print_int
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  jr ra
+.globl error
+error:
+  mv a1, a0
+  li a0, @print_string
+  ecall
+  li a1, 10
+  li a0, @print_char
+  ecall
+  li a0, @exit
+  ecall
+abort_17:
+  j abort_17
+.globl alloc
 alloc:
   mv a1, a0
   li a0, @sbrk
   ecall
   jr ra
-
+.data
+.globl msg_nullptr
+msg_nullptr:
+  .asciiz "null pointer"
+  .align 2
+.globl msg_array_oob
+msg_array_oob:
+  .asciiz "array index out of bounds"
+  .align 2
+.text
+.globl Main
 Main:
-  addi sp, sp, -32
-  sw ra, 28(sp)
-  sw s0, 24(sp)
-  addi s0, sp, 32
+  sw fp, -8(sp)
+  mv fp, sp
+  li t0, 16
+  sub sp, sp, t0
+  sw ra, -4(fp)
   la t3, f
   jalr t3
-  sw a0, -12(s0)
-  sw t0, -16(s0)
-  sw v1, -20(s0)
-  mv a1, t1
-  li a0, @print_int
-  ecall
-  li a1, 10
-  li a0, @print_char
-  ecall
-  lw a0, -16(s0)
-  lw ra, 28(sp)
-  lw s0, 24(sp)
-  addi sp, sp, 32
+  mv t0, a0
+  sw a0, -12(fp)
+  sw t0, -16(fp)
+  lw t1, -16(fp)
+  mv a0, t1
+  jal print
+  lw a0, -16(fp)
+  lw ra, -4(fp)
+  lw fp, -8(fp)
+  li t0, 16
+  add sp, sp, t0
   jr ra
 
+.globl f
 f:
-  addi sp, sp, -240
-  sw ra, 236(sp)
-  sw s0, 232(sp)
-  addi s0, sp, 240
-  sw s1, -12(s0)
-  sw s2, -16(s0)
-  sw s3, -20(s0)
-  sw s4, -24(s0)
-  sw s5, -28(s0)
-  sw s6, -32(s0)
-  sw s7, -36(s0)
-  sw s8, -40(s0)
-  sw s9, -44(s0)
-  sw s10, -48(s0)
-  sw s11, -52(s0)
+  sw fp, -8(sp)
+  mv fp, sp
+  li t0, 160
+  sub sp, sp, t0
+  sw ra, -4(fp)
+  sw s1, -12(fp)
+  sw s2, -16(fp)
+  sw s3, -20(fp)
+  sw s4, -24(fp)
+  sw s5, -28(fp)
+  sw s6, -32(fp)
+  sw s7, -36(fp)
+  sw s8, -40(fp)
+  sw s9, -44(fp)
+  sw s10, -48(fp)
+  sw s11, -52(fp)
   li t3, 10
   li t0, 20
-  sw t0, -56(s0)
-  sw b, -60(s0)
+  sw t0, -56(fp)
+  lw t2, -56(fp)
   add t0, t3, t2
-  sw t0, -64(s0)
+  sw t0, -60(fp)
   li t4, 30
   slt t5, t3, t4
-  beqz t5, L8
-  sw c, -60(s0)
+  bnez t5, f_br0
+  j f_L8
+f_br0:
+  lw t2, -60(fp)
   add t0, t3, t2
-  sw t0, -68(s0)
-  sw b, -60(s0)
+  sw t0, -64(fp)
+  lw t2, -56(fp)
   add t0, t3, t2
-  sw t0, -72(s0)
-  j L10
-L8:
-  sw b, -76(s0)
-  sw c, -60(s0)
+  sw t0, -68(fp)
+  j f_L10
+f_L8:
+  lw t1, -56(fp)
+  lw t2, -60(fp)
   add t0, t1, t2
-  sw t0, -80(s0)
-  j L14
-L10:
+  sw t0, -72(fp)
+  j f_L14
+f_L10:
   li s1, 50
-  sw d, -76(s0)
+  lw t1, -64(fp)
   add t0, t1, s1
-  sw t0, -56(s0)
-  sw c, -76(s0)
-  sw d, -60(s0)
+  sw t0, -56(fp)
+  lw t1, -60(fp)
+  lw t2, -64(fp)
   add s2, t1, t2
-  sw f, -60(s0)
+  lw t2, -68(fp)
   add s3, s2, t2
-  mv a1, s3
-  li a0, @print_int
-  ecall
-  li a1, 10
-  li a0, @print_char
-  ecall
-  sw c, -76(s0)
-  sw f, -60(s0)
+  mv a0, s3
+  jal print
+  lw t1, -60(fp)
+  lw t2, -68(fp)
   add t0, t1, t2
-  sw t0, -80(s0)
+  sw t0, -72(fp)
   li s4, 40
-  sw b, -76(s0)
+  lw t1, -56(fp)
   add t0, t1, s4
-  sw t0, -56(s0)
-  j L8
-L14:
+  sw t0, -56(fp)
+  j f_L8
+f_L14:
   li s5, 10
   add t0, t3, s5
-  sw t0, -72(s0)
-L22:
+  sw t0, -68(fp)
+f_L22:
   li t0, 55
-  sw t0, -56(s0)
+  sw t0, -56(fp)
   li s6, 20
   sub t0, t3, s6
-  sw t0, -64(s0)
-  sw b, -76(s0)
-  sw c, -60(s0)
+  sw t0, -60(fp)
+  lw t1, -56(fp)
+  lw t2, -60(fp)
   slt s7, t1, t2
-  beqz s7, L20
-  sw c, -76(s0)
-  sw b, -60(s0)
+  bnez s7, f_br1
+  j f_L20
+f_br1:
+  lw t1, -60(fp)
+  lw t2, -56(fp)
   add t0, t1, t2
-  sw t0, -68(s0)
-  sw d, -76(s0)
+  sw t0, -64(fp)
+  lw t1, -64(fp)
   sub t0, t1, s5
-  sw t0, -80(s0)
-  sw d, -76(s0)
-  sw e, -60(s0)
+  sw t0, -72(fp)
+  lw t1, -64(fp)
+  lw t2, -72(fp)
   add s8, t1, t2
-  mv a1, s8
-  li a0, @print_int
-  ecall
-  li a1, 10
-  li a0, @print_char
-  ecall
-  sw c, -76(s0)
-  sw e, -60(s0)
+  mv a0, s8
+  jal print
+  lw t1, -60(fp)
+  lw t2, -72(fp)
   add t0, t1, t2
-  sw t0, -56(s0)
+  sw t0, -56(fp)
   li s9, 2
-  sw b, -60(s0)
+  lw t2, -56(fp)
   sub t0, s9, t2
-  sw t0, -72(s0)
-  j L22
-L20:
+  sw t0, -68(fp)
+  j f_L22
+f_L20:
   li s10, 7
-  sw f, -76(s0)
+  lw t1, -68(fp)
   add t0, t1, s10
-  sw t0, -56(s0)
-  sw c, -76(s0)
-  sw b, -60(s0)
+  sw t0, -56(fp)
+  lw t1, -60(fp)
+  lw t2, -56(fp)
   add t0, t1, t2
-  sw t0, -64(s0)
+  sw t0, -60(fp)
   li s9, 2
-  sw c, -60(s0)
+  lw t2, -60(fp)
   mul t0, s9, t2
-  sw t0, -80(s0)
-  sw f, -76(s0)
+  sw t0, -72(fp)
+  lw t1, -68(fp)
   add t0, t1, s5
-  sw t0, -84(s0)
+  sw t0, -76(fp)
   li s11, 55
-  sw s11, -88(s0)
+  sw s11, -80(fp)
   la t0, g
-  sw t0, -92(s0)
-  sw g, -76(s0)
-  sw h, -60(s0)
+  sw t0, -84(fp)
+  lw t1, -76(fp)
+  lw t2, -80(fp)
   slt t4, t1, t2
-  beqz t4, L27
-  sw g, -76(s0)
+  bnez t4, f_br2
+  j f_L27
+f_br2:
+  lw t1, -76(fp)
   sub t0, t1, s6
-  sw t0, -96(s0)
-  sw b, -100(s0)
-  sw t0, -104(s0)
-  sw c, -100(s0)
-  sw t0, -108(s0)
-  sw d, -100(s0)
-  sw t0, -112(s0)
-  sw e, -100(s0)
-  sw t0, -116(s0)
-  sw f, -100(s0)
-  sw t0, -120(s0)
-  sw g, -100(s0)
-  sw t0, -124(s0)
-  sw h, -100(s0)
-  sw t0, -128(s0)
-  sw i, -100(s0)
-  sw t0, -132(s0)
-  sw v2, -76(s0)
-  lw a0, -128(s0)
-  lw a1, -132(s0)
+  sw t0, -88(fp)
+  lw t0, -56(fp)
+  mv a2, t0
+  lw t0, -60(fp)
+  mv a3, t0
+  lw t0, -64(fp)
+  mv a4, t0
+  lw t0, -72(fp)
+  mv a5, t0
+  lw t0, -68(fp)
+  mv a6, t0
+  lw t0, -76(fp)
+  mv a7, t0
+  lw t0, -80(fp)
+  sw t0, -92(fp)
+  lw t0, -88(fp)
+  sw t0, -96(fp)
+  lw t1, -84(fp)
+  lw a0, -92(fp)
+  lw a1, -96(fp)
   jalr t1
-  sw a0, -100(s0)
-  sw t0, -88(s0)
-  sw i, -76(s0)
-  sw h, -60(s0)
+  mv t0, a0
+  sw a0, -100(fp)
+  sw t0, -80(fp)
+  lw t1, -88(fp)
+  lw t2, -80(fp)
   add t0, t1, t2
-  sw t0, -136(s0)
-  j L29
-L27:
+  sw t0, -104(fp)
+  j f_L29
+f_L27:
   li t0, 1
-  sw t0, -140(s0)
-  sw g, -76(s0)
-  sw one, -60(s0)
+  sw t0, -108(fp)
+  lw t1, -76(fp)
+  lw t2, -108(fp)
   add t0, t1, t2
-  sw t0, -144(s0)
-  sw k, -60(s0)
+  sw t0, -112(fp)
+  lw t2, -112(fp)
   mul t0, s9, t2
-  sw t0, -136(s0)
-L29:
+  sw t0, -104(fp)
+f_L29:
   li t0, 5
-  sw t0, -148(s0)
-  sw j, -76(s0)
-  sw five, -60(s0)
+  sw t0, -116(fp)
+  lw t1, -104(fp)
+  lw t2, -116(fp)
   sub t0, t1, t2
-  sw t0, -152(s0)
-  sw g, -76(s0)
-  sw l, -60(s0)
+  sw t0, -120(fp)
+  lw t1, -76(fp)
+  lw t2, -120(fp)
   add t0, t1, t2
-  sw t0, -144(s0)
-  sw j, -76(s0)
-  sw k, -60(s0)
+  sw t0, -112(fp)
+  lw t1, -104(fp)
+  lw t2, -112(fp)
   sub t0, t1, t2
-  sw t0, -156(s0)
-  sw q, -76(s0)
-  sw l, -60(s0)
+  sw t0, -124(fp)
+  lw t1, -124(fp)
+  lw t2, -120(fp)
   add t0, t1, t2
-  sw t0, -160(s0)
-  sw r, -76(s0)
-  mv a1, t1
-  li a0, @print_int
-  ecall
-  li a1, 10
-  li a0, @print_char
-  ecall
-  sw j, -76(s0)
-  sw k, -60(s0)
+  sw t0, -128(fp)
+  lw t1, -128(fp)
+  mv a0, t1
+  jal print
+  lw t1, -104(fp)
+  lw t2, -112(fp)
   add t0, t1, t2
-  sw t0, -96(s0)
-  sw c, -76(s0)
-  sw d, -60(s0)
+  sw t0, -88(fp)
+  lw t1, -60(fp)
+  lw t2, -64(fp)
   add t0, t1, t2
-  sw t0, -64(s0)
-  sw d, -76(s0)
+  sw t0, -60(fp)
+  lw t1, -64(fp)
   add t0, t1, s6
-  sw t0, -164(s0)
-  sw i, -76(s0)
-  sw m, -60(s0)
+  sw t0, -132(fp)
+  lw t1, -88(fp)
+  lw t2, -132(fp)
   add t0, t1, t2
-  sw t0, -168(s0)
-  sw d, -76(s0)
-  sw n, -60(s0)
+  sw t0, -136(fp)
+  lw t1, -64(fp)
+  lw t2, -136(fp)
   slt s2, t1, t2
-L3:
-  beqz s2, L12
-  sw d, -76(s0)
-  sw m, -60(s0)
+f_L3:
+  bnez s2, f_br3
+  j f_L12
+f_br3:
+  lw t1, -64(fp)
+  lw t2, -132(fp)
   add t0, t1, t2
-  sw t0, -172(s0)
+  sw t0, -140(fp)
   li t0, 30
-  sw t0, -176(s0)
-  sw o, -76(s0)
-  sw thirty, -60(s0)
+  sw t0, -144(fp)
+  lw t1, -140(fp)
+  lw t2, -144(fp)
   add t0, t1, t2
-  sw t0, -180(s0)
-  sw i, -76(s0)
-  sw p, -60(s0)
+  sw t0, -148(fp)
+  lw t1, -88(fp)
+  lw t2, -148(fp)
   sub t0, t1, t2
-  sw t0, -180(s0)
-  sw o, -76(s0)
-  sw p, -60(s0)
+  sw t0, -148(fp)
+  lw t1, -140(fp)
+  lw t2, -148(fp)
   sub t0, t1, t2
-  sw t0, -168(s0)
+  sw t0, -136(fp)
   li t0, 0
-  sw t0, -184(s0)
-  sw n, -76(s0)
-  sw zero, -60(s0)
+  sw t0, -152(fp)
+  lw t1, -136(fp)
+  lw t2, -152(fp)
   mul s2, t1, t2
-  sw c, -76(s0)
-  sw g, -60(s0)
+  lw t1, -60(fp)
+  lw t2, -76(fp)
   add t0, t1, t2
-  sw t0, -164(s0)
-  sw o, -76(s0)
-  sw n, -60(s0)
+  sw t0, -132(fp)
+  lw t1, -140(fp)
+  lw t2, -136(fp)
   add t0, t1, t2
-  sw t0, -168(s0)
-  sw m, -76(s0)
-  sw n, -60(s0)
+  sw t0, -136(fp)
+  lw t1, -132(fp)
+  lw t2, -136(fp)
   sub t0, t1, t2
-  sw t0, -188(s0)
-  sw u, -76(s0)
-  mv a1, t1
-  li a0, @print_int
-  ecall
-  li a1, 10
-  li a0, @print_char
-  ecall
-  j L3
-L12:
-  sw k, -76(s0)
-  sw n, -60(s0)
+  sw t0, -156(fp)
+  lw t1, -156(fp)
+  mv a0, t1
+  jal print
+  j f_L3
+f_L12:
+  lw t1, -112(fp)
+  lw t2, -136(fp)
   sub t0, t1, t2
-  sw t0, -84(s0)
-  sw o, -76(s0)
-  sw g, -60(s0)
+  sw t0, -76(fp)
+  lw t1, -140(fp)
+  lw t2, -76(fp)
   add t0, t1, t2
-  sw t0, -84(s0)
-  sw stack_save_s3, -192(s0)
-  sw stack_save_s4, -196(s0)
-  sw stack_save_s5, -200(s0)
-  sw stack_save_s11, -204(s0)
-  sw stack_save_s6, -208(s0)
-  sw stack_save_s10, -212(s0)
-  sw stack_save_s7, -216(s0)
-  sw stack_save_s8, -220(s0)
-  sw stack_save_s9, -224(s0)
-  sw stack_save_s1, -228(s0)
-  sw stack_save_s2, -232(s0)
-  lw a0, -84(s0)
-  lw ra, 236(sp)
-  lw s0, 232(sp)
-  addi sp, sp, 240
+  sw t0, -76(fp)
+  lw s3, -20(fp)
+  lw s4, -24(fp)
+  lw s5, -28(fp)
+  lw s11, -52(fp)
+  lw s6, -32(fp)
+  lw s10, -48(fp)
+  lw s7, -36(fp)
+  lw s8, -40(fp)
+  lw s9, -44(fp)
+  lw s1, -12(fp)
+  lw s2, -16(fp)
+  lw a0, -76(fp)
+  lw ra, -4(fp)
+  lw fp, -8(fp)
+  li t0, 160
+  add sp, sp, t0
   jr ra
 
+.globl g
 g:
-  addi sp, sp, -176
-  sw ra, 172(sp)
-  sw s0, 168(sp)
-  addi s0, sp, 176
-  sw a0, -12(s0)
-  sw a1, -16(s0)
-  sw s1, -20(s0)
-  sw s2, -24(s0)
-  sw s3, -28(s0)
-  sw s4, -32(s0)
-  sw s5, -36(s0)
-  sw s6, -40(s0)
-  sw s7, -44(s0)
+  sw fp, -8(sp)
+  mv fp, sp
+  li t0, 112
+  sub sp, sp, t0
+  sw ra, -4(fp)
+  sw a0, -12(fp)
+  sw a1, -16(fp)
+  sw s1, -20(fp)
+  sw s2, -24(fp)
+  sw s3, -28(fp)
+  sw s4, -32(fp)
+  sw s5, -36(fp)
+  sw s6, -40(fp)
+  sw s7, -44(fp)
   add t3, a2, a3
   add t4, a4, a5
   add t5, a6, a7
-  sw x7, -48(s0)
-  sw x8, -52(s0)
+  lw t1, -12(fp)
+  lw t2, -16(fp)
   add s1, t1, t2
   li t0, 10
-  sw t0, -56(s0)
-  sw ten, -48(s0)
-  sw t1, -60(s0)
-  sw x8, -48(s0)
+  sw t0, -48(fp)
+  lw t1, -48(fp)
+  mv s2, t1
+  lw t1, -16(fp)
   slt t0, t1, a2
-  sw t0, -64(s0)
-  sw v3, -48(s0)
-  beqz t1, L42
+  sw t0, -52(fp)
+  lw t1, -52(fp)
+  bnez t1, g_br4
+  j g_L42
+g_br4:
   la s3, g
-  sw t3, -68(s0)
-  sw t4, -72(s0)
-  sw t5, -76(s0)
-  sw a2, -80(s0)
-  sw a3, -84(s0)
-  sw a4, -88(s0)
-  sw a5, -92(s0)
-  sw a6, -96(s0)
-  sw a7, -100(s0)
-  sw v3, -104(s0)
-  sw t0, -108(s0)
-  sw x7, -104(s0)
-  sw t0, -112(s0)
-  sw v3, -104(s0)
-  sw t0, -116(s0)
-  sw stack_save_a6, -104(s0)
-  sw t0, -120(s0)
-  sw ten, -104(s0)
-  sw t0, -124(s0)
-  sw v3, -104(s0)
-  sw t0, -128(s0)
-  sw stack_save_a3, -104(s0)
-  sw t0, -132(s0)
-  sw ten, -104(s0)
-  sw t0, -136(s0)
-  lw a0, -132(s0)
-  lw a1, -136(s0)
+  sw t3, -56(fp)
+  sw t4, -60(fp)
+  sw t5, -64(fp)
+  sw a2, -68(fp)
+  sw a3, -72(fp)
+  sw a4, -76(fp)
+  sw a5, -80(fp)
+  sw a6, -84(fp)
+  sw a7, -88(fp)
+  lw t0, -52(fp)
+  mv a2, t0
+  lw t0, -12(fp)
+  mv a3, t0
+  lw t0, -52(fp)
+  mv a4, t0
+  lw t0, -84(fp)
+  mv a5, t0
+  lw t0, -48(fp)
+  mv a6, t0
+  lw t0, -52(fp)
+  mv a7, t0
+  lw t0, -72(fp)
+  sw t0, -92(fp)
+  lw t0, -48(fp)
+  sw t0, -96(fp)
+  lw a0, -92(fp)
+  lw a1, -96(fp)
   jalr s3
-  sw a0, -104(s0)
-  sw stack_save_t4, -140(s0)
-  sw stack_save_t5, -144(s0)
-  sw stack_save_a2, -108(s0)
-  sw stack_save_a3, -112(s0)
-  sw stack_save_a4, -116(s0)
-  sw stack_save_a5, -120(s0)
-  sw stack_save_a6, -124(s0)
-  sw stack_save_a7, -128(s0)
-  sw stack_save_t3, -148(s0)
-  sw t0, -148(s0)
-L42:
+  mv t0, a0
+  sw a0, -100(fp)
+  lw t4, -60(fp)
+  lw t5, -64(fp)
+  lw a2, -68(fp)
+  lw a3, -72(fp)
+  lw a4, -76(fp)
+  lw a5, -80(fp)
+  lw a6, -84(fp)
+  lw a7, -88(fp)
+  lw t3, -56(fp)
+  mv t3, t0
+g_L42:
   sub s2, s1, t3
   mul s4, t4, s2
   sub s5, t5, s4
   add s6, s1, s2
   add s7, s2, s4
   add t0, s5, s6
-  sw t0, -152(s0)
-  sw stack_save_s3, -156(s0)
-  sw stack_save_s4, -160(s0)
-  sw stack_save_s5, -164(s0)
-  sw stack_save_s6, -168(s0)
-  sw stack_save_s7, -172(s0)
-  sw stack_save_s1, -176(s0)
-  sw stack_save_s2, -60(s0)
-  lw a0, -152(s0)
-  lw ra, 172(sp)
-  lw s0, 168(sp)
-  addi sp, sp, 176
+  sw t0, -104(fp)
+  lw s3, -28(fp)
+  lw s4, -32(fp)
+  lw s5, -36(fp)
+  lw s6, -40(fp)
+  lw s7, -44(fp)
+  lw s1, -20(fp)
+  lw s2, -24(fp)
+  lw a0, -104(fp)
+  lw ra, -4(fp)
+  lw fp, -8(fp)
+  li t0, 112
+  add sp, sp, t0
   jr ra
 

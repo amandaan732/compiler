@@ -1,12 +1,4 @@
-Exception in thread "main" java.lang.NumberFormatException: For input string: ""
-	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
-	at java.base/java.lang.Integer.parseInt(Integer.java:670)
-	at java.base/java.lang.Integer.parseInt(Integer.java:778)
-	at venus.riscv.insts.dsl.parsers.UtilsKt.regNameToNumber(utils.kt:22)
-	at venus.riscv.insts.dsl.parsers.STypeParser.invoke(STypeParser.kt:15)
-	at venus.assembler.AssemblerPassTwo.addInstruction(Assembler.kt:291)
-	at venus.assembler.AssemblerPassTwo.run(Assembler.kt:271)
-	at venus.assembler.Assembler.assemble(Assembler.kt:29)
-	at Venus.assembleAndLink(Venus.java:21)
-	at Venus.assembleLinkAndRun(Venus.java:34)
-	at Main.main(Main.java:13)
+100
+40464
+80770
+121302
